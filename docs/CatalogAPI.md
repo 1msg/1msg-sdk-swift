@@ -20,7 +20,7 @@ Update catalog/cart commerce settings via the `params` object.  - `params.is_cat
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let createCommerceRequest = createCommerce_request(params: createCommerce_request_params(isCartEnabled: false, isCatalogVisible: false)) // CreateCommerceRequest | 
@@ -72,7 +72,7 @@ Returns catalog/cart commerce settings for the channel.  - `is_catalog_visible` 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 

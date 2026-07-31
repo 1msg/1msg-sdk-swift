@@ -19,7 +19,7 @@ Block WhatsApp user
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let blockUserRequest = blockUser_request(phone: 123) // BlockUserRequest | 
@@ -71,7 +71,7 @@ Returns users currently blocked on this WhatsApp channel (WABA `GET /block_users
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 
@@ -119,7 +119,7 @@ Unblock WhatsApp user
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let blockUserRequest = blockUser_request(phone: 123) // BlockUserRequest | 

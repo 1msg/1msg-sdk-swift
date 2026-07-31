@@ -20,7 +20,7 @@ Get WhatsApp Business Account profile information
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 
@@ -70,7 +70,7 @@ Update WhatsApp Business Account profile fields. At least one of about, descript
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let updateMeRequest = updateMe_request(about: "about_example", address: "address_example", description: "description_example", email: "email_example", vertical: "vertical_example", photo: "photo_example", websites: ["websites_example"]) // UpdateMeRequest |  (optional)

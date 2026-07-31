@@ -23,7 +23,7 @@ Create Group
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 
@@ -71,7 +71,7 @@ Update Group Info
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let groupId = "groupId_example" // String | 
 let token = "token_example" // String | JWT token or API key for authorization
@@ -121,7 +121,7 @@ Reset Invite Link
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let groupId = "groupId_example" // String | 
 let token = "token_example" // String | JWT token or API key for authorization
@@ -171,7 +171,7 @@ Delete Group
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let groupId = "groupId_example" // String | 
 let token = "token_example" // String | JWT token or API key for authorization
@@ -221,7 +221,7 @@ Get Group Info
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let groupId = "groupId_example" // String | 
 let token = "token_example" // String | JWT token or API key for authorization
@@ -271,7 +271,7 @@ Get Invite Link
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let groupId = "groupId_example" // String | 
 let token = "token_example" // String | JWT token or API key for authorization
@@ -321,7 +321,7 @@ Get Groups List
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 

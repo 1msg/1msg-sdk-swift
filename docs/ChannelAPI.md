@@ -21,7 +21,7 @@ Get WhatsApp conversational components for the channel (welcome message, ice-bre
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 
@@ -71,7 +71,7 @@ Returns WhatsApp Business API client connection status.
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 
@@ -121,7 +121,7 @@ Update WhatsApp conversational components.  Allowed body fields (others are igno
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let conversationalAutomation = ConversationalAutomation(enableWelcomeMessage: false, prompts: ["prompts_example"], commands: [ConversationalAutomation_commands_inner(commandName: "commandName_example", commandDescription: "commandDescription_example")]) // ConversationalAutomation | 

@@ -8,7 +8,7 @@ import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
-open class OneMsgChatApiAPI {
+open class OneMsgSdkAPI {
     public static var basePath = "https://api.1msg.io"
     public static var customHeaders: [String: String] = [:]
     public static var credential: URLCredential?
@@ -35,7 +35,7 @@ open class RequestBuilder<T> {
         self.headers = headers
         self.requiresAuthentication = requiresAuthentication
 
-        addHeaders(OneMsgChatApiAPI.customHeaders)
+        addHeaders(OneMsgSdkAPI.customHeaders)
         addCredential()
     }
 
@@ -46,7 +46,7 @@ open class RequestBuilder<T> {
     }
 
     @discardableResult
-    open func execute(_ apiResponseQueue: DispatchQueue = OneMsgChatApiAPI.apiResponseQueue, _ completion: @escaping (_ result: Swift.Result<Response<T>, ErrorResponse>) -> Void) -> RequestTask {
+    open func execute(_ apiResponseQueue: DispatchQueue = OneMsgSdkAPI.apiResponseQueue, _ completion: @escaping (_ result: Swift.Result<Response<T>, ErrorResponse>) -> Void) -> RequestTask {
         return requestTask
     }
 
@@ -83,7 +83,7 @@ open class RequestBuilder<T> {
     }
 
     open func addCredential() {
-        credential = OneMsgChatApiAPI.credential
+        credential = OneMsgSdkAPI.credential
     }
 }
 

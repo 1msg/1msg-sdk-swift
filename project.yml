@@ -1,13 +1,13 @@
-name: OneMsgChatApi
+name: OneMsgSdk
 targets:
-  OneMsgChatApi:
+  OneMsgSdk:
     type: framework
     platform: iOS
     deploymentTarget: "11.0"
     sources: [Sources]
     info:
       path: ./Info.plist
-      version: 1.0.0
+      version: 1.1.0
     settings:
       APPLICATION_EXTENSION_API_ONLY: true
     scheme: {}

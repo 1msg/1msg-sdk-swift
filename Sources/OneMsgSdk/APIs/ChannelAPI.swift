@@ -35,7 +35,7 @@ open class ChannelAPI {
      */
     open class func getConversationalAutomationWithRequestBuilder(token: String) -> RequestBuilder<ConversationalAutomation> {
         let localVariablePath = "/conversationalAutomation"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -49,7 +49,7 @@ open class ChannelAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ConversationalAutomation>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<ConversationalAutomation>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -77,7 +77,7 @@ open class ChannelAPI {
      */
     open class func getStatusWithRequestBuilder(token: String) -> RequestBuilder<[String: AnyCodable]> {
         let localVariablePath = "/status"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -91,7 +91,7 @@ open class ChannelAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -121,7 +121,7 @@ open class ChannelAPI {
      */
     open class func setConversationalAutomationWithRequestBuilder(token: String, conversationalAutomation: ConversationalAutomation) -> RequestBuilder<[String: AnyCodable]> {
         let localVariablePath = "/conversationalAutomation"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: conversationalAutomation)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -135,7 +135,7 @@ open class ChannelAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

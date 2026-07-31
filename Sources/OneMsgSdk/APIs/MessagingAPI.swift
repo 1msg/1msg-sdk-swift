@@ -40,7 +40,7 @@ open class MessagingAPI {
      */
     open class func createReadMessageWithRequestBuilder(token: String, messageId: String? = nil, msgId: String? = nil, typingIndicator: Bool? = nil) -> RequestBuilder<CreateReadMessage200Response> {
         let localVariablePath = "/readMessage"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableFormParams: [String: Any?] = [
             "messageId": messageId?.encodeToJSON(),
             "msgId": msgId?.encodeToJSON(),
@@ -61,7 +61,7 @@ open class MessagingAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<CreateReadMessage200Response>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<CreateReadMessage200Response>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -90,7 +90,7 @@ open class MessagingAPI {
      */
     open class func createUploadMediaWithRequestBuilder(token: String, requestBody: [String: AnyCodable]? = nil) -> RequestBuilder<Void> {
         let localVariablePath = "/uploadMedia"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: requestBody)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -104,7 +104,7 @@ open class MessagingAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OneMsgChatApiAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OneMsgSdkAPI.requestBuilderFactory.getNonDecodableBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -137,7 +137,7 @@ open class MessagingAPI {
         let mediaIdPreEscape = "\(APIHelper.mapValueToPathItem(mediaId))"
         let mediaIdPostEscape = mediaIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{mediaId}", with: mediaIdPostEscape, options: .literal, range: nil)
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -151,7 +151,7 @@ open class MessagingAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<SuccessResponse>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<SuccessResponse>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -183,7 +183,7 @@ open class MessagingAPI {
     @available(*, deprecated, message: "This operation is deprecated.")
     open class func deleteMediaLegacyWithRequestBuilder(token: String, deleteMediaLegacyRequest: DeleteMediaLegacyRequest) -> RequestBuilder<SuccessResponse> {
         let localVariablePath = "/deleteMedia"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: deleteMediaLegacyRequest)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -197,7 +197,7 @@ open class MessagingAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<SuccessResponse>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<SuccessResponse>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -224,7 +224,7 @@ open class MessagingAPI {
      */
     open class func getMmLiteStatusWithRequestBuilder(token: String) -> RequestBuilder<GetMmLiteStatus200Response> {
         let localVariablePath = "/mmLiteStatus"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -238,7 +238,7 @@ open class MessagingAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<GetMmLiteStatus200Response>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<GetMmLiteStatus200Response>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -265,7 +265,7 @@ open class MessagingAPI {
      */
     open class func listMessagesWithRequestBuilder(token: String) -> RequestBuilder<ListMessages200Response> {
         let localVariablePath = "/messages"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -279,7 +279,7 @@ open class MessagingAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ListMessages200Response>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<ListMessages200Response>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -309,7 +309,7 @@ open class MessagingAPI {
      */
     open class func retrieveMediaWithRequestBuilder(token: String, mediaId: String) -> RequestBuilder<RetrieveMedia200Response> {
         let localVariablePath = "/retrieveMedia"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -324,7 +324,7 @@ open class MessagingAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<RetrieveMedia200Response>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<RetrieveMedia200Response>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -354,7 +354,7 @@ open class MessagingAPI {
      */
     open class func sendAddressMessageWithRequestBuilder(token: String, sendAddressMessageRequest: SendAddressMessageRequest) -> RequestBuilder<MessageSentResponse> {
         let localVariablePath = "/sendAddressMessage"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: sendAddressMessageRequest)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -368,7 +368,7 @@ open class MessagingAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -397,7 +397,7 @@ open class MessagingAPI {
      */
     open class func sendButtonWithRequestBuilder(token: String, sendButtonRequest: SendButtonRequest? = nil) -> RequestBuilder<MessageSentResponse> {
         let localVariablePath = "/sendButton"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: sendButtonRequest)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -411,7 +411,7 @@ open class MessagingAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -449,7 +449,7 @@ open class MessagingAPI {
      */
     open class func sendCarouselWithRequestBuilder(token: String, params: [AnyCodable], body: String? = nil, quotedMsgId: String? = nil, chatId: String? = nil, phone: Int? = nil) -> RequestBuilder<MessageSentResponse> {
         let localVariablePath = "/sendCarousel"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableFormParams: [String: Any?] = [
             "body": body?.encodeToJSON(),
             "params": params.encodeToJSON(),
@@ -472,7 +472,7 @@ open class MessagingAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -501,7 +501,7 @@ open class MessagingAPI {
      */
     open class func sendContactWithRequestBuilder(token: String, sendContactRequest: SendContactRequest? = nil) -> RequestBuilder<MessageSentResponse> {
         let localVariablePath = "/sendContact"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: sendContactRequest)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -515,7 +515,7 @@ open class MessagingAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -545,7 +545,7 @@ open class MessagingAPI {
      */
     open class func sendCtaUrlWithRequestBuilder(token: String, sendCtaUrlRequest: SendCtaUrlRequest) -> RequestBuilder<MessageSentResponse> {
         let localVariablePath = "/sendCtaUrl"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: sendCtaUrlRequest)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -559,7 +559,7 @@ open class MessagingAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -615,7 +615,7 @@ open class MessagingAPI {
      */
     open class func sendFileWithRequestBuilder(token: String, body: String? = nil, filename: String? = nil, mediaId: String? = nil, mediaType: MediaType_sendFile? = nil, voice: Bool? = nil, caption: String? = nil, quotedMsgId: String? = nil, chatId: String? = nil, phone: Int? = nil) -> RequestBuilder<MessageSentResponse> {
         let localVariablePath = "/sendFile"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableFormParams: [String: Any?] = [
             "body": body?.encodeToJSON(),
             "filename": filename?.encodeToJSON(),
@@ -642,7 +642,7 @@ open class MessagingAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -716,7 +716,7 @@ open class MessagingAPI {
      */
     open class func sendFlowWithRequestBuilder(token: String, body: String, flowId: String, flowToken: String, flowCta: String, header: SendFlowRequestHeader? = nil, footer: String? = nil, flowAction: FlowAction_sendFlow? = nil, flowActionPayload: AnyCodable? = nil, flowMessageVersion: String? = nil, mode: Mode_sendFlow? = nil, flowActionData: AnyCodable? = nil, flowActionScreen: String? = nil, quotedMsgId: String? = nil, chatId: String? = nil, phone: Int? = nil) -> RequestBuilder<MessageSentResponse> {
         let localVariablePath = "/sendFlow"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableFormParams: [String: Any?] = [
             "body": body.encodeToJSON(),
             "header": header?.encodeToJSON(),
@@ -749,7 +749,7 @@ open class MessagingAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -778,7 +778,7 @@ open class MessagingAPI {
      */
     open class func sendListWithRequestBuilder(token: String, sendListRequest: SendListRequest? = nil) -> RequestBuilder<MessageSentResponse> {
         let localVariablePath = "/sendList"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: sendListRequest)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -792,7 +792,7 @@ open class MessagingAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -834,7 +834,7 @@ open class MessagingAPI {
      */
     open class func sendLocationWithRequestBuilder(token: String, lat: String, lng: String, address: String? = nil, name: String? = nil, quotedMsgId: String? = nil, chatId: String? = nil, phone: Int? = nil) -> RequestBuilder<MessageSentResponse> {
         let localVariablePath = "/sendLocation"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableFormParams: [String: Any?] = [
             "lat": lat.encodeToJSON(),
             "lng": lng.encodeToJSON(),
@@ -859,7 +859,7 @@ open class MessagingAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -888,7 +888,7 @@ open class MessagingAPI {
      */
     open class func sendLocationRequestWithRequestBuilder(token: String, sendLocationRequestRequest: SendLocationRequestRequest? = nil) -> RequestBuilder<MessageSentResponse> {
         let localVariablePath = "/sendLocationRequest"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: sendLocationRequestRequest)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -902,7 +902,7 @@ open class MessagingAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -938,7 +938,7 @@ open class MessagingAPI {
      */
     open class func sendMessageWithRequestBuilder(token: String, body: String, quotedMsgId: String? = nil, chatId: String? = nil, phone: Int? = nil) -> RequestBuilder<MessageSentResponse> {
         let localVariablePath = "/sendMessage"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableFormParams: [String: Any?] = [
             "body": body.encodeToJSON(),
             "quotedMsgId": quotedMsgId?.encodeToJSON(),
@@ -960,7 +960,7 @@ open class MessagingAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -990,7 +990,7 @@ open class MessagingAPI {
      */
     open class func sendOrderDetailsWithRequestBuilder(token: String, sendOrderDetailsRequest: SendOrderDetailsRequest) -> RequestBuilder<MessageSentResponse> {
         let localVariablePath = "/sendOrderDetails"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: sendOrderDetailsRequest)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -1004,7 +1004,7 @@ open class MessagingAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -1034,7 +1034,7 @@ open class MessagingAPI {
      */
     open class func sendPaymentRequestWithRequestBuilder(token: String, sendPaymentRequestRequest: SendPaymentRequestRequest) -> RequestBuilder<MessageSentResponse> {
         let localVariablePath = "/sendPaymentRequest"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: sendPaymentRequestRequest)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -1048,7 +1048,7 @@ open class MessagingAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -1077,7 +1077,7 @@ open class MessagingAPI {
      */
     open class func sendProductWithRequestBuilder(token: String, requestBody: [String: AnyCodable]? = nil) -> RequestBuilder<MessageSentResponse> {
         let localVariablePath = "/sendProduct"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: requestBody)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -1091,7 +1091,7 @@ open class MessagingAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -1120,7 +1120,7 @@ open class MessagingAPI {
      */
     open class func sendReactionWithRequestBuilder(token: String, sendReactionRequest: SendReactionRequest? = nil) -> RequestBuilder<MessageSentResponse> {
         let localVariablePath = "/sendReaction"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: sendReactionRequest)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -1134,7 +1134,7 @@ open class MessagingAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -1164,7 +1164,7 @@ open class MessagingAPI {
      */
     open class func sendStickerWithRequestBuilder(token: String, sendStickerRequest: SendStickerRequest) -> RequestBuilder<MessageSentResponse> {
         let localVariablePath = "/sendSticker"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: sendStickerRequest)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -1178,7 +1178,7 @@ open class MessagingAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

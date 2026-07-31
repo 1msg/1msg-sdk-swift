@@ -39,7 +39,7 @@ Mark message as read
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let messageId = "messageId_example" // String |  (optional)
@@ -93,7 +93,7 @@ Upload media
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let requestBody = "TODO" // [String: AnyCodable] |  (optional)
@@ -145,7 +145,7 @@ Delete previously uploaded media by numeric `mediaId` (from `/uploadMedia`).  Th
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let mediaId = "mediaId_example" // String | Numeric WABA media id
@@ -197,7 +197,7 @@ Delete media from WABA storage (deprecated alias)
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let deleteMediaLegacyRequest = deleteMediaLegacy_request(mediaId: "mediaId_example") // DeleteMediaLegacyRequest | 
@@ -247,7 +247,7 @@ Get MM Lite availability and status
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 
@@ -295,7 +295,7 @@ Get messages list
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 
@@ -345,7 +345,7 @@ Get WABA media URL and metadata by mediaId (from uploadMedia). The returned `url
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let mediaId = "mediaId_example" // String | 
@@ -397,7 +397,7 @@ Request shipping address from the user (WhatsApp interactive `address_message`).
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let sendAddressMessageRequest = sendAddressMessage_request(phone: 123, chatId: "chatId_example", body: "body_example", country: "country_example", values: "TODO", savedAddresses: ["TODO"], validationErrors: "TODO", quotedMsgId: "quotedMsgId_example") // SendAddressMessageRequest | 
@@ -447,7 +447,7 @@ Send Reply Buttons Message
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let sendButtonRequest = sendButton_request(phone: "phone_example", body: "body_example", footer: "footer_example", sections: [sendButton_request_sections_inner(type: "type_example", reply: sendButton_request_sections_inner_reply(id: "id_example", title: "title_example"))]) // SendButtonRequest |  (optional)
@@ -499,7 +499,7 @@ You can send product cards via Carousel in two ways:  Template messages: do not 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let params = [123] // [AnyCodable] | Required. Template-like structure (same as sendTemplate params). Must include a CAROUSEL component and its cards.  Structure: - params[] item with type CAROUSEL and cards (2..10) - cards[] item:   - components[] items:     - header: parameters[0] with type image/video/product       - image: {\\\"image\\\": {\\\"link\\\": \\\"https://...\\\"}}       - video: {\\\"video\\\": {\\\"link\\\": \\\"https://...\\\"}}       - product: {\\\"product\\\": {\\\"catalog_id\\\": \\\"...\\\", \\\"product_retailer_id\\\": \\\"...\\\"}}     - button: sub_type url or quick_reply       - url: parameters {\\\"text\\\": \\\"Button\\\", \\\"url\\\": \\\"https://...\\\"}       - quick_reply: parameters[] of {\\\"id\\\": \\\"...\\\", \\\"text\\\": \\\"...\\\"} 
@@ -557,7 +557,7 @@ Send a Contact
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let sendContactRequest = sendContact_request(phone: "phone_example", contacts: [sendContact_request_contacts_inner(name: sendContact_request_contacts_inner_name(formattedName: "formattedName_example", firstName: "firstName_example", lastName: "lastName_example", middleName: "middleName_example", suffix: "suffix_example", _prefix: "_prefix_example"), birthday: "birthday_example", addresses: [123], emails: [123], org: sendContact_request_contacts_inner_org(company: "company_example", department: "department_example", title: "title_example"), phones: [sendContact_request_contacts_inner_phones_inner(phone: "phone_example", type: "type_example", waId: "waId_example")], urls: [123])]) // SendContactRequest |  (optional)
@@ -609,7 +609,7 @@ Send an interactive message with a single call-to-action URL button.
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let sendCtaUrlRequest = sendCtaUrl_request(phone: 123, chatId: "chatId_example", body: "body_example", displayText: "displayText_example", url: "url_example", header: "TODO", footer: "footer_example", quotedMsgId: "quotedMsgId_example") // SendCtaUrlRequest | 
@@ -661,7 +661,7 @@ Send a file to an existing chat. (Only if the dialogue has an Open Session).  On
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let body = "body_example" // String | File source (required unless mediaId is set): - HTTP/HTTPS URL - Base64 data URI  (optional)
@@ -729,7 +729,7 @@ Send Interactive WhatsApp Flow message to an existing chat. (Only if the dialogu
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let body = "body_example" // String | Flow message body text
@@ -807,7 +807,7 @@ Send List Message
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let sendListRequest = sendList_request(phone: "phone_example", body: "body_example", buttonText: "buttonText_example", action: "action_example", sections: [sendList_request_sections_inner(title: "title_example", rows: [sendList_request_sections_inner_rows_inner(id: "id_example", title: "title_example", description: "description_example")])]) // SendListRequest |  (optional)
@@ -859,7 +859,7 @@ Send a location to an existing chat. (Only if the dialogue has an Open Session).
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let lat = "lat_example" // String | Latitude of the location. Example: 45.018337
@@ -921,7 +921,7 @@ Send Location Request Message
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let sendLocationRequestRequest = sendLocationRequest_request(phone: "phone_example", body: "body_example") // SendLocationRequestRequest |  (optional)
@@ -973,7 +973,7 @@ Send a message to an existing chat. (Only if the dialogue has an Open Session). 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let body = "body_example" // String | Message text, UTF-8 or UTF-16 string with emoji
@@ -1031,7 +1031,7 @@ Send a WhatsApp **order details** payment / invoice message using a pre-approved
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let sendOrderDetailsRequest = sendOrderDetails_request(phone: 123, chatId: "chatId_example", template: "template_example", namespace: "namespace_example", language: sendOrderDetails_request_language(code: "code_example", policy: "policy_example"), params: ["TODO"], referenceId: "referenceId_example", currency: "currency_example", paymentSettings: "TODO", order: sendOrderDetails_request_order(status: "status_example", items: [sendOrderDetails_request_order_items_inner(retailerId: "retailerId_example", name: "name_example", quantity: 123, amount: sendOrderDetails_request_order_items_inner_amount(offset: 123, value: 123))], subtotal: nil, tax: "TODO", shipping: "TODO", discount: "TODO")) // SendOrderDetailsRequest | 
@@ -1083,7 +1083,7 @@ Send a regional payment request interactive message (beta scaffold). `region` mu
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let sendPaymentRequestRequest = sendPaymentRequest_request(phone: 123, region: "region_example", body: "body_example", interactive: "TODO", action: "TODO") // SendPaymentRequestRequest | 
@@ -1133,7 +1133,7 @@ Send a Product
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let requestBody = "TODO" // [String: AnyCodable] |  (optional)
@@ -1183,7 +1183,7 @@ Send Reaction
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let sendReactionRequest = sendReaction_request(phone: "phone_example", body: "body_example", quotedMsgId: "quotedMsgId_example") // SendReactionRequest |  (optional)
@@ -1235,7 +1235,7 @@ Send a WhatsApp sticker by mediaId or link URL.
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let sendStickerRequest = sendSticker_request(phone: 123, chatId: "chatId_example", mediaId: "mediaId_example", link: "link_example", quotedMsgId: "quotedMsgId_example") // SendStickerRequest | 

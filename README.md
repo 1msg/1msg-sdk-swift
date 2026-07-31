@@ -7,7 +7,7 @@ auth, quick start, and every public operation available in the client.
 
 | | |
 |---|---|
-| **Swift Package** | [`OneMsgChatApi`](https://github.com/1msg/1msg-sdk-swift) |
+| **Swift Package** | [`OneMsgSdk`](https://github.com/1msg/1msg-sdk-swift) |
 | **Source** | [github.com/1msg/1msg-sdk-swift](https://github.com/1msg/1msg-sdk-swift) |
 | **API docs** | [docs.1msg.io](https://docs.1msg.io/) |
 | **Platform** | [platform.1msg.io](https://platform.1msg.io/) |
@@ -21,7 +21,7 @@ auth, quick start, and every public operation available in the client.
 ## Install
 
 ```swift
-.package(url: "https://github.com/1msg/1msg-sdk-swift.git", from: "1.0.0")
+.package(url: "https://github.com/1msg/1msg-sdk-swift.git", from: "1.1.0")
 ```
 
 ## Requirements
@@ -37,7 +37,7 @@ Use environment variables (`MSG_API_TOKEN`, `MSG_INSTANCE_ID`). Never commit tok
 ## Quick start
 
 ```swift
-import OneMsgChatApi
+import OneMsgSdk
 
 let config = Configuration(basePath: "https://api.1msg.io/\(ProcessInfo.processInfo.environment["MSG_INSTANCE_ID"]!)")
 let messaging = MessagingAPI(configuration: config)
@@ -85,7 +85,7 @@ WebhooksAPI
 
 ## Package notes
 
-Swift package URL is `https://github.com/1msg/1msg-sdk-swift.git`. Module name is `OneMsgChatApi`.
+Swift package URL is `https://github.com/1msg/1msg-sdk-swift.git`. Module name is `OneMsgSdk`.
 
 ## API reference
 

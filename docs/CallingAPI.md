@@ -21,7 +21,7 @@ WhatsApp Calling API settings (beta). Requires Meta Calling enablement on the WA
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 
@@ -71,7 +71,7 @@ Outbound Calling API (beta). Requires Meta Calling enablement and product consen
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let requestBody = "TODO" // [String: AnyCodable] |  (optional)
@@ -123,7 +123,7 @@ Update WhatsApp Calling API settings (beta). Requires Meta Calling enablement. T
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let requestBody = "TODO" // [String: AnyCodable] |  (optional)

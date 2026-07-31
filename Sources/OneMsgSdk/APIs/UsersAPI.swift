@@ -36,7 +36,7 @@ open class UsersAPI {
      */
     open class func blockUserWithRequestBuilder(token: String, blockUserRequest: BlockUserRequest) -> RequestBuilder<SuccessResponse> {
         let localVariablePath = "/blockUser"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: blockUserRequest)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -50,7 +50,7 @@ open class UsersAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<SuccessResponse>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<SuccessResponse>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -78,7 +78,7 @@ open class UsersAPI {
      */
     open class func listBlockedUsersWithRequestBuilder(token: String) -> RequestBuilder<ListBlockedUsers200Response> {
         let localVariablePath = "/blockedUsers"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -92,7 +92,7 @@ open class UsersAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ListBlockedUsers200Response>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<ListBlockedUsers200Response>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -121,7 +121,7 @@ open class UsersAPI {
      */
     open class func unblockUserWithRequestBuilder(token: String, blockUserRequest: BlockUserRequest) -> RequestBuilder<SuccessResponse> {
         let localVariablePath = "/unblockUser"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: blockUserRequest)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -135,7 +135,7 @@ open class UsersAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<SuccessResponse>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<SuccessResponse>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

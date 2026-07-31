@@ -36,7 +36,7 @@ open class FlowsAPI {
      */
     open class func createFlowsWithRequestBuilder(token: String, wabaAccountId: String? = nil) -> RequestBuilder<CreateGroups200Response> {
         let localVariablePath = "/flows"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -51,7 +51,7 @@ open class FlowsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<CreateGroups200Response>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<CreateGroups200Response>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -85,7 +85,7 @@ open class FlowsAPI {
         let flowIdPreEscape = "\(APIHelper.mapValueToPathItem(flowId))"
         let flowIdPostEscape = flowIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{flowId}", with: flowIdPostEscape, options: .literal, range: nil)
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -100,7 +100,7 @@ open class FlowsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -134,7 +134,7 @@ open class FlowsAPI {
         let flowIdPreEscape = "\(APIHelper.mapValueToPathItem(flowId))"
         let flowIdPostEscape = flowIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{flowId}", with: flowIdPostEscape, options: .literal, range: nil)
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -149,7 +149,7 @@ open class FlowsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -183,7 +183,7 @@ open class FlowsAPI {
         let flowIdPreEscape = "\(APIHelper.mapValueToPathItem(flowId))"
         let flowIdPostEscape = flowIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{flowId}", with: flowIdPostEscape, options: .literal, range: nil)
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -198,7 +198,7 @@ open class FlowsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<DeleteFlowsFlowId200Response>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<DeleteFlowsFlowId200Response>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -232,7 +232,7 @@ open class FlowsAPI {
         let flowIdPreEscape = "\(APIHelper.mapValueToPathItem(flowId))"
         let flowIdPostEscape = flowIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{flowId}", with: flowIdPostEscape, options: .literal, range: nil)
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -247,7 +247,7 @@ open class FlowsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<CreateGroups200Response>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<CreateGroups200Response>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -281,7 +281,7 @@ open class FlowsAPI {
         let flowIdPreEscape = "\(APIHelper.mapValueToPathItem(flowId))"
         let flowIdPostEscape = flowIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{flowId}", with: flowIdPostEscape, options: .literal, range: nil)
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -296,7 +296,7 @@ open class FlowsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -324,7 +324,7 @@ open class FlowsAPI {
      */
     open class func getWhatsappBusinessEncryptionWithRequestBuilder(token: String) -> RequestBuilder<GetWhatsappBusinessEncryption200Response> {
         let localVariablePath = "/whatsapp_business_encryption"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -338,7 +338,7 @@ open class FlowsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<GetWhatsappBusinessEncryption200Response>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<GetWhatsappBusinessEncryption200Response>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -367,7 +367,7 @@ open class FlowsAPI {
      */
     open class func listFlowsWithRequestBuilder(token: String, wabaAccountId: String? = nil) -> RequestBuilder<ListFlows200Response> {
         let localVariablePath = "/flows"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -382,7 +382,7 @@ open class FlowsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ListFlows200Response>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<ListFlows200Response>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -416,7 +416,7 @@ open class FlowsAPI {
         let flowIdPreEscape = "\(APIHelper.mapValueToPathItem(flowId))"
         let flowIdPostEscape = flowIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{flowId}", with: flowIdPostEscape, options: .literal, range: nil)
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -431,7 +431,7 @@ open class FlowsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<PatchFlowsFlowIdAssets200Response>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<PatchFlowsFlowIdAssets200Response>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -465,7 +465,7 @@ open class FlowsAPI {
         let flowIdPreEscape = "\(APIHelper.mapValueToPathItem(flowId))"
         let flowIdPostEscape = flowIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{flowId}", with: flowIdPostEscape, options: .literal, range: nil)
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -480,7 +480,7 @@ open class FlowsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -510,7 +510,7 @@ open class FlowsAPI {
      */
     open class func setWhatsappBusinessEncryptionWithRequestBuilder(token: String, setWhatsappBusinessEncryptionRequest: SetWhatsappBusinessEncryptionRequest) -> RequestBuilder<CreateCommerce200Response> {
         let localVariablePath = "/whatsapp_business_encryption"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: setWhatsappBusinessEncryptionRequest)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -524,7 +524,7 @@ open class FlowsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<CreateCommerce200Response>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<CreateCommerce200Response>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

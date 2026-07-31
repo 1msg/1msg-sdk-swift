@@ -35,7 +35,7 @@ open class CallingAPI {
      */
     open class func getCallingSettingsWithRequestBuilder(token: String) -> RequestBuilder<[String: AnyCodable]> {
         let localVariablePath = "/callingSettings"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -49,7 +49,7 @@ open class CallingAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -79,7 +79,7 @@ open class CallingAPI {
      */
     open class func initiateCallWithRequestBuilder(token: String, requestBody: [String: AnyCodable]? = nil) -> RequestBuilder<[String: AnyCodable]> {
         let localVariablePath = "/initiateCall"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: requestBody)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -93,7 +93,7 @@ open class CallingAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -123,7 +123,7 @@ open class CallingAPI {
      */
     open class func updateCallingSettingsWithRequestBuilder(token: String, requestBody: [String: AnyCodable]? = nil) -> RequestBuilder<[String: AnyCodable]> {
         let localVariablePath = "/callingSettings"
-        let localVariableURLString = OneMsgChatApiAPI.basePath + localVariablePath
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: requestBody)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
@@ -137,7 +137,7 @@ open class CallingAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = OneMsgChatApiAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

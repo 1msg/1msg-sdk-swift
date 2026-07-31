@@ -27,7 +27,7 @@ Create Flow
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let wabaAccountId = "wabaAccountId_example" // String |  (optional)
@@ -77,7 +77,7 @@ Deprecate Flow
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let flowId = "flowId_example" // String | Flow ID
 let token = "token_example" // String | JWT token or API key for authorization
@@ -129,7 +129,7 @@ Publish Flow
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let flowId = "flowId_example" // String | Flow ID
 let token = "token_example" // String | JWT token or API key for authorization
@@ -181,7 +181,7 @@ Delete Flow
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let flowId = "flowId_example" // String | Flow ID
 let token = "token_example" // String | JWT token or API key for authorization
@@ -233,7 +233,7 @@ Get Flow Details
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let flowId = "flowId_example" // String | Flow ID
 let token = "token_example" // String | JWT token or API key for authorization
@@ -285,7 +285,7 @@ Preview Flow
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let flowId = "flowId_example" // String | Flow ID
 let token = "token_example" // String | JWT token or API key for authorization
@@ -339,7 +339,7 @@ Retrieve the WhatsApp business public key and signature status for this channel'
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 
@@ -387,7 +387,7 @@ List Flows
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let wabaAccountId = "wabaAccountId_example" // String |  (optional)
@@ -437,7 +437,7 @@ Update Flow Structure
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let flowId = "flowId_example" // String | Flow ID
 let token = "token_example" // String | JWT token or API key for authorization
@@ -489,7 +489,7 @@ Update Flow Metadata
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let flowId = "flowId_example" // String | Flow ID
 let token = "token_example" // String | JWT token or API key for authorization
@@ -543,7 +543,7 @@ Upload and sign a 2048-bit RSA business public key (PEM) for this channel's phon
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let setWhatsappBusinessEncryptionRequest = setWhatsappBusinessEncryption_request(businessPublicKey: "businessPublicKey_example") // SetWhatsappBusinessEncryptionRequest | 

@@ -20,7 +20,7 @@ Returns the configured client webhook URL for this channel.
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 
@@ -70,7 +70,7 @@ Configure the client webhook URL for inbound events.
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let getWebhook200Response = getWebhook_200_response(webhookUrl: "webhookUrl_example") // GetWebhook200Response |  (optional)

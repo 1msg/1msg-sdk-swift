@@ -20,7 +20,7 @@ Create message template
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let addTemplateRequest = addTemplate_request(name: "name_example", category: "category_example", language: "language_example", components: ["TODO"]) // AddTemplateRequest |  (optional)
@@ -70,7 +70,7 @@ Get templates list
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 
@@ -118,7 +118,7 @@ Remove message template
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let requestBody = "TODO" // [String: AnyCodable] |  (optional)
@@ -170,7 +170,7 @@ Send a WhatsApp template message (works outside the 24-hour session window).  Su
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OneMsgChatApi
+import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let sendTemplateRequest = sendTemplate_request(template: "template_example", language: sendTemplate_request_language(policy: "policy_example", code: "code_example"), namespace: "namespace_example", params: [123], phone: "phone_example", useMMlite: false, messageActivitySharing: false, messageSendTtlSeconds: 123) // SendTemplateRequest |  (optional)
