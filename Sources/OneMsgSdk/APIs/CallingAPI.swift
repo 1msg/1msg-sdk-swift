@@ -16,24 +16,24 @@ open class CallingAPI {
      Get calling settings
      
      - parameter token: (query) JWT token or API key for authorization 
-     - returns: [String: AnyCodable]
+     - returns: CallingSettings
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    open class func getCallingSettings(token: String) async throws -> [String: AnyCodable] {
+    open class func getCallingSettings(token: String) async throws -> CallingSettings {
         return try await getCallingSettingsWithRequestBuilder(token: token).execute().body
     }
 
     /**
      Get calling settings
      - GET /callingSettings
-     - WhatsApp Calling API settings (beta). Requires Meta Calling enablement on the WABA. Not production-complete — paths and webhook field names may change. Trial/subscription-limited channels are blocked. 
+     - Return WhatsApp Calling API settings for this channel (beta).  Proxies upstream `GET /calling/settings`.  **Prerequisites** - Number must be eligible for Meta Calling (Cloud API; not COEX) - Trial / `subscriptionBlocked` channels receive **403** plain text - You need your own WebRTC or SIP stack; 1msg is a **signaling proxy** only   and does **not** store call history or recordings  See the **Calling** tag overview for inbound/outbound flows and webhooks. 
      - API Key:
        - type: apiKey token (QUERY)
        - name: tokenAuth
      - parameter token: (query) JWT token or API key for authorization 
-     - returns: RequestBuilder<[String: AnyCodable]> 
+     - returns: RequestBuilder<CallingSettings> 
      */
-    open class func getCallingSettingsWithRequestBuilder(token: String) -> RequestBuilder<[String: AnyCodable]> {
+    open class func getCallingSettingsWithRequestBuilder(token: String) -> RequestBuilder<CallingSettings> {
         let localVariablePath = "/callingSettings"
         let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -49,38 +49,38 @@ open class CallingAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<CallingSettings>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
 
     /**
-     Initiate WhatsApp call
+     Call action (connect / pre_accept / accept / reject / terminate)
      
      - parameter token: (query) JWT token or API key for authorization 
-     - parameter requestBody: (body)  (optional)
-     - returns: [String: AnyCodable]
+     - parameter initiateCallRequest: (body)  
+     - returns: InitiateCallResponse
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    open class func initiateCall(token: String, requestBody: [String: AnyCodable]? = nil) async throws -> [String: AnyCodable] {
-        return try await initiateCallWithRequestBuilder(token: token, requestBody: requestBody).execute().body
+    open class func initiateCall(token: String, initiateCallRequest: InitiateCallRequest) async throws -> InitiateCallResponse {
+        return try await initiateCallWithRequestBuilder(token: token, initiateCallRequest: initiateCallRequest).execute().body
     }
 
     /**
-     Initiate WhatsApp call
+     Call action (connect / pre_accept / accept / reject / terminate)
      - POST /initiateCall
-     - Outbound Calling API (beta). Requires Meta Calling enablement and product consent. Not production-complete — verify on stage before relying on this in production. Trial/subscription-limited channels are blocked. 
+     - Perform a WhatsApp Calling action (beta).  Proxies upstream `POST /calling/calls`. Despite the historical path name `/initiateCall`, this endpoint handles **all** call actions:  | action | Use | Required | |--------|-----|----------| | `connect` | Outbound business → user | `to` + `session` (`sdp_type: offer`) | | `pre_accept` | Inbound (optional, reduces audio clipping) | `call_id` + `session` (`sdp_type: answer`) | | `accept` | Inbound answer | `call_id` + `session` (`sdp_type: answer`) | | `reject` | Decline inbound | `call_id` | | `terminate` | Hang up | `call_id` |  **SDP / media (critical)** - `accept` / `pre_accept` require a **WebRTC-generated SDP answer**. - Do **not** send Meta's offer SDP back as the answer. - Postman (or curl) alone **cannot** establish real media — you need a   WebRTC or SIP stack. 1msg only proxies signaling.  Answer within ~**30–60 seconds** of an inbound `connect` webhook or Meta terminates as unanswered. Common Meta errors include Calling not enabled (`138000`), no permission (`138006`), SDP validation failures.  **Outbound** requires a prior Call Permission Request (CPR) acceptance. See the **Calling** tag overview for the full outbound flow and CPR limits.  Trial / `subscriptionBlocked` → **403** plain text. Upstream failures often return HTTP 200 with `{ \"response\": { \"error\": \"...\" } }`. 
      - API Key:
        - type: apiKey token (QUERY)
        - name: tokenAuth
      - parameter token: (query) JWT token or API key for authorization 
-     - parameter requestBody: (body)  (optional)
-     - returns: RequestBuilder<[String: AnyCodable]> 
+     - parameter initiateCallRequest: (body)  
+     - returns: RequestBuilder<InitiateCallResponse> 
      */
-    open class func initiateCallWithRequestBuilder(token: String, requestBody: [String: AnyCodable]? = nil) -> RequestBuilder<[String: AnyCodable]> {
+    open class func initiateCallWithRequestBuilder(token: String, initiateCallRequest: InitiateCallRequest) -> RequestBuilder<InitiateCallResponse> {
         let localVariablePath = "/initiateCall"
         let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: requestBody)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: initiateCallRequest)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
@@ -93,7 +93,7 @@ open class CallingAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<InitiateCallResponse>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -102,29 +102,29 @@ open class CallingAPI {
      Update calling settings
      
      - parameter token: (query) JWT token or API key for authorization 
-     - parameter requestBody: (body)  (optional)
-     - returns: [String: AnyCodable]
+     - parameter callingSettings: (body)  
+     - returns: UpdateCallingSettings200Response
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    open class func updateCallingSettings(token: String, requestBody: [String: AnyCodable]? = nil) async throws -> [String: AnyCodable] {
-        return try await updateCallingSettingsWithRequestBuilder(token: token, requestBody: requestBody).execute().body
+    open class func updateCallingSettings(token: String, callingSettings: CallingSettings) async throws -> UpdateCallingSettings200Response {
+        return try await updateCallingSettingsWithRequestBuilder(token: token, callingSettings: callingSettings).execute().body
     }
 
     /**
      Update calling settings
      - POST /callingSettings
-     - Update WhatsApp Calling API settings (beta). Requires Meta Calling enablement. Trial/subscription-limited channels are blocked. 
+     - Enable, disable, or update WhatsApp Calling settings (beta).  Proxies upstream `POST /calling/settings`. Body is forwarded as-is (1msg does not validate fields).  **Common fields under `calling`** - `status` (`ENABLED` | `DISABLED`) — required to turn calling on/off - `call_icon_visibility` (`DEFAULT` | `DISABLE_ALL`) — optional - `callback_permission_status` (`ENABLED` | `DISABLED`) — optional;   when enabled, inbound user calls grant callback permission - `call_hours` — optional hours / timezone object - `sip` — optional SIP trunk; when SIP is ENABLED, Graph call actions and   calling webhooks are not used - `srtp_key_exchange_protocol` (`DTLS` | `SDES`) — SDES only with SIP - `video.status` — optional  Meta may accept only one feature group per request — prefer focused updates (e.g. enable status first, then SIP).  Trial / `subscriptionBlocked` → **403** plain text. 
      - API Key:
        - type: apiKey token (QUERY)
        - name: tokenAuth
      - parameter token: (query) JWT token or API key for authorization 
-     - parameter requestBody: (body)  (optional)
-     - returns: RequestBuilder<[String: AnyCodable]> 
+     - parameter callingSettings: (body)  
+     - returns: RequestBuilder<UpdateCallingSettings200Response> 
      */
-    open class func updateCallingSettingsWithRequestBuilder(token: String, requestBody: [String: AnyCodable]? = nil) -> RequestBuilder<[String: AnyCodable]> {
+    open class func updateCallingSettingsWithRequestBuilder(token: String, callingSettings: CallingSettings) -> RequestBuilder<UpdateCallingSettings200Response> {
         let localVariablePath = "/callingSettings"
         let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: requestBody)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: callingSettings)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
@@ -137,7 +137,7 @@ open class CallingAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UpdateCallingSettings200Response>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

@@ -69,7 +69,7 @@ open class WebhooksAPI {
     /**
      Set webhook URL
      - POST /webhook
-     - Configure the client webhook URL for inbound events.
+     - Configure the client webhook URL for inbound events.  WhatsApp **Calling** events (`field=calls`) are forwarded as passthrough payloads with `type: \"calls\"` and `instanceId` (connect / status / terminate). Call permission replies arrive on the normal messages path (`call_permission_reply`). Details: **Calling** tag. 
      - API Key:
        - type: apiKey token (QUERY)
        - name: tokenAuth
