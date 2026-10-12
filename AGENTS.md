@@ -9,3 +9,5 @@ Use Node 24.19.0 for tooling and `npm --prefix tools/quality ci`. Run `node tool
 The `quality-required` aggregate fails if any required job is failed, skipped or cancelled. Repository branch protection must require that check; a workflow file alone does not configure GitHub protection. No generation/build/publish command may swallow errors.
 
 `tools/quality` is a checksum-sealed versioned vendor preset, validated by its own executable tests and integrity check; Knip analyzes the consumer tooling graph and excludes that nested vendor workspace. `java` is the explicitly provisioned native generator runtime (CI Temurin24), not an npm package; its pinned generator JAR checksum is mandatory. No authored consumer source is excluded.
+
+The generated Swift package declares Apple platforms and imports Apple framework adapters. Its native build/consumer contract runs on macOS; Linux compatibility is not claimed.
