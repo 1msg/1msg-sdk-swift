@@ -34,6 +34,8 @@ jobs:
       - run: npm run lint:duplicates:full
       - run: node quality/generator/generate.mjs
       - run: node quality/generator/verify-negative.mjs
+      - name: Import official Swift signing keys
+        run: curl --fail --silent --show-error --location --compressed https://www.swift.org/keys/all-keys.asc | gpg --import -
       - uses: swift-actions/setup-swift@v3
         with:
           swift-version: "6.3.2"
