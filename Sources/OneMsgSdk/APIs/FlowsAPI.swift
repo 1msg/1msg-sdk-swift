@@ -16,28 +16,31 @@ open class FlowsAPI {
      Create Flow
      
      - parameter token: (query) JWT token or API key for authorization 
+     - parameter createFlowsRequest: (body)  
      - parameter wabaAccountId: (query)  (optional)
      - returns: CreateGroups200Response
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    open class func createFlows(token: String, wabaAccountId: String? = nil) async throws -> CreateGroups200Response {
-        return try await createFlowsWithRequestBuilder(token: token, wabaAccountId: wabaAccountId).execute().body
+    open class func createFlows(token: String, createFlowsRequest: CreateFlowsRequest, wabaAccountId: String? = nil) async throws -> CreateGroups200Response {
+        return try await createFlowsWithRequestBuilder(token: token, createFlowsRequest: createFlowsRequest, wabaAccountId: wabaAccountId).execute().body
     }
 
     /**
      Create Flow
      - POST /flows
+     - Create a WhatsApp Flow (`name` + `categories` required). Currently returns HTTP 501 until the Meta Graph Flows rewrite is available. 
      - API Key:
        - type: apiKey token (QUERY)
        - name: tokenAuth
      - parameter token: (query) JWT token or API key for authorization 
+     - parameter createFlowsRequest: (body)  
      - parameter wabaAccountId: (query)  (optional)
      - returns: RequestBuilder<CreateGroups200Response> 
      */
-    open class func createFlowsWithRequestBuilder(token: String, wabaAccountId: String? = nil) -> RequestBuilder<CreateGroups200Response> {
+    open class func createFlowsWithRequestBuilder(token: String, createFlowsRequest: CreateFlowsRequest, wabaAccountId: String? = nil) -> RequestBuilder<CreateGroups200Response> {
         let localVariablePath = "/flows"
         let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
-        let localVariableParameters: [String: Any]? = nil
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createFlowsRequest)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
@@ -46,7 +49,7 @@ open class FlowsAPI {
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
-            :
+            "Content-Type": "application/json",
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
@@ -348,24 +351,27 @@ open class FlowsAPI {
      
      - parameter token: (query) JWT token or API key for authorization 
      - parameter wabaAccountId: (query)  (optional)
+     - parameter fields: (query) Comma-separated Flow fields to return (optional)
      - returns: ListFlows200Response
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    open class func listFlows(token: String, wabaAccountId: String? = nil) async throws -> ListFlows200Response {
-        return try await listFlowsWithRequestBuilder(token: token, wabaAccountId: wabaAccountId).execute().body
+    open class func listFlows(token: String, wabaAccountId: String? = nil, fields: String? = nil) async throws -> ListFlows200Response {
+        return try await listFlowsWithRequestBuilder(token: token, wabaAccountId: wabaAccountId, fields: fields).execute().body
     }
 
     /**
      List Flows
      - GET /flows
+     - List WhatsApp Flows for the WABA. Currently returns HTTP 501 until the Meta Graph Flows rewrite is available. 
      - API Key:
        - type: apiKey token (QUERY)
        - name: tokenAuth
      - parameter token: (query) JWT token or API key for authorization 
      - parameter wabaAccountId: (query)  (optional)
+     - parameter fields: (query) Comma-separated Flow fields to return (optional)
      - returns: RequestBuilder<ListFlows200Response> 
      */
-    open class func listFlowsWithRequestBuilder(token: String, wabaAccountId: String? = nil) -> RequestBuilder<ListFlows200Response> {
+    open class func listFlowsWithRequestBuilder(token: String, wabaAccountId: String? = nil, fields: String? = nil) -> RequestBuilder<ListFlows200Response> {
         let localVariablePath = "/flows"
         let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -374,6 +380,7 @@ open class FlowsAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "token": (wrappedValue: token.encodeToJSON(), isExplode: true),
             "wabaAccountId": (wrappedValue: wabaAccountId?.encodeToJSON(), isExplode: true),
+            "fields": (wrappedValue: fields?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -392,32 +399,35 @@ open class FlowsAPI {
      
      - parameter flowId: (path) Flow ID 
      - parameter token: (query) JWT token or API key for authorization 
+     - parameter patchFlowsFlowIdAssetsRequest: (body)  
      - parameter wabaAccountId: (query)  (optional)
      - returns: PatchFlowsFlowIdAssets200Response
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    open class func patchFlowsFlowIdAssets(flowId: String, token: String, wabaAccountId: String? = nil) async throws -> PatchFlowsFlowIdAssets200Response {
-        return try await patchFlowsFlowIdAssetsWithRequestBuilder(flowId: flowId, token: token, wabaAccountId: wabaAccountId).execute().body
+    open class func patchFlowsFlowIdAssets(flowId: String, token: String, patchFlowsFlowIdAssetsRequest: PatchFlowsFlowIdAssetsRequest, wabaAccountId: String? = nil) async throws -> PatchFlowsFlowIdAssets200Response {
+        return try await patchFlowsFlowIdAssetsWithRequestBuilder(flowId: flowId, token: token, patchFlowsFlowIdAssetsRequest: patchFlowsFlowIdAssetsRequest, wabaAccountId: wabaAccountId).execute().body
     }
 
     /**
      Update Flow Structure
      - PATCH /flows/{flowId}/assets
+     - Replace the Flow JSON document (`flowJson`). Currently returns HTTP 501 until the Meta Graph Flows rewrite is available. 
      - API Key:
        - type: apiKey token (QUERY)
        - name: tokenAuth
      - parameter flowId: (path) Flow ID 
      - parameter token: (query) JWT token or API key for authorization 
+     - parameter patchFlowsFlowIdAssetsRequest: (body)  
      - parameter wabaAccountId: (query)  (optional)
      - returns: RequestBuilder<PatchFlowsFlowIdAssets200Response> 
      */
-    open class func patchFlowsFlowIdAssetsWithRequestBuilder(flowId: String, token: String, wabaAccountId: String? = nil) -> RequestBuilder<PatchFlowsFlowIdAssets200Response> {
+    open class func patchFlowsFlowIdAssetsWithRequestBuilder(flowId: String, token: String, patchFlowsFlowIdAssetsRequest: PatchFlowsFlowIdAssetsRequest, wabaAccountId: String? = nil) -> RequestBuilder<PatchFlowsFlowIdAssets200Response> {
         var localVariablePath = "/flows/{flowId}/assets"
         let flowIdPreEscape = "\(APIHelper.mapValueToPathItem(flowId))"
         let flowIdPostEscape = flowIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{flowId}", with: flowIdPostEscape, options: .literal, range: nil)
         let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
-        let localVariableParameters: [String: Any]? = nil
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: patchFlowsFlowIdAssetsRequest)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
@@ -426,7 +436,7 @@ open class FlowsAPI {
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
-            :
+            "Content-Type": "application/json",
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
@@ -441,32 +451,35 @@ open class FlowsAPI {
      
      - parameter flowId: (path) Flow ID 
      - parameter token: (query) JWT token or API key for authorization 
+     - parameter patchFlowsFlowIdMetadataRequest: (body)  
      - parameter wabaAccountId: (query)  (optional)
      - returns: [String: AnyCodable]
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    open class func patchFlowsFlowIdMetadata(flowId: String, token: String, wabaAccountId: String? = nil) async throws -> [String: AnyCodable] {
-        return try await patchFlowsFlowIdMetadataWithRequestBuilder(flowId: flowId, token: token, wabaAccountId: wabaAccountId).execute().body
+    open class func patchFlowsFlowIdMetadata(flowId: String, token: String, patchFlowsFlowIdMetadataRequest: PatchFlowsFlowIdMetadataRequest, wabaAccountId: String? = nil) async throws -> [String: AnyCodable] {
+        return try await patchFlowsFlowIdMetadataWithRequestBuilder(flowId: flowId, token: token, patchFlowsFlowIdMetadataRequest: patchFlowsFlowIdMetadataRequest, wabaAccountId: wabaAccountId).execute().body
     }
 
     /**
      Update Flow Metadata
      - PATCH /flows/{flowId}/metadata
+     - Update Flow `name`, `categories`, and/or `endpointUri`. Currently returns HTTP 501 until the Meta Graph Flows rewrite is available. 
      - API Key:
        - type: apiKey token (QUERY)
        - name: tokenAuth
      - parameter flowId: (path) Flow ID 
      - parameter token: (query) JWT token or API key for authorization 
+     - parameter patchFlowsFlowIdMetadataRequest: (body)  
      - parameter wabaAccountId: (query)  (optional)
      - returns: RequestBuilder<[String: AnyCodable]> 
      */
-    open class func patchFlowsFlowIdMetadataWithRequestBuilder(flowId: String, token: String, wabaAccountId: String? = nil) -> RequestBuilder<[String: AnyCodable]> {
+    open class func patchFlowsFlowIdMetadataWithRequestBuilder(flowId: String, token: String, patchFlowsFlowIdMetadataRequest: PatchFlowsFlowIdMetadataRequest, wabaAccountId: String? = nil) -> RequestBuilder<[String: AnyCodable]> {
         var localVariablePath = "/flows/{flowId}/metadata"
         let flowIdPreEscape = "\(APIHelper.mapValueToPathItem(flowId))"
         let flowIdPostEscape = flowIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{flowId}", with: flowIdPostEscape, options: .literal, range: nil)
         let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
-        let localVariableParameters: [String: Any]? = nil
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: patchFlowsFlowIdMetadataRequest)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
@@ -475,7 +488,7 @@ open class FlowsAPI {
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
-            :
+            "Content-Type": "application/json",
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)

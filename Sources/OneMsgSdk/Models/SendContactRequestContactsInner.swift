@@ -14,13 +14,13 @@ public struct SendContactRequestContactsInner: Codable, JSONEncodable, Hashable 
 
     public var name: SendContactRequestContactsInnerName?
     public var birthday: String?
-    public var addresses: [AnyCodable]?
-    public var emails: [AnyCodable]?
+    public var addresses: [[String: AnyCodable]]?
+    public var emails: [[String: AnyCodable]]?
     public var org: SendContactRequestContactsInnerOrg?
     public var phones: [SendContactRequestContactsInnerPhonesInner]?
-    public var urls: [AnyCodable]?
+    public var urls: [[String: AnyCodable]]?
 
-    public init(name: SendContactRequestContactsInnerName? = nil, birthday: String? = nil, addresses: [AnyCodable]? = nil, emails: [AnyCodable]? = nil, org: SendContactRequestContactsInnerOrg? = nil, phones: [SendContactRequestContactsInnerPhonesInner]? = nil, urls: [AnyCodable]? = nil) {
+    public init(name: SendContactRequestContactsInnerName? = nil, birthday: String? = nil, addresses: [[String: AnyCodable]]? = nil, emails: [[String: AnyCodable]]? = nil, org: SendContactRequestContactsInnerOrg? = nil, phones: [SendContactRequestContactsInnerPhonesInner]? = nil, urls: [[String: AnyCodable]]? = nil) {
         self.name = name
         self.birthday = birthday
         self.addresses = addresses

@@ -12,16 +12,19 @@ import AnyCodable
 
 public struct UpdateMeRequest: Codable, JSONEncodable, Hashable {
 
-    /** Profile About section */
+    /** Profile About section (WhatsApp status text) */
     public var about: String?
+    /** Business address shown on the profile */
     public var address: String?
     /** Business description (max 256 characters) */
     public var description: String?
+    /** Business email shown on the profile */
     public var email: String?
     /** Industry of the business */
     public var vertical: String?
     /** HTTPS URL or data:image/...;base64,... payload */
     public var photo: String?
+    /** Business website URLs */
     public var websites: [String]?
 
     public init(about: String? = nil, address: String? = nil, description: String? = nil, email: String? = nil, vertical: String? = nil, photo: String? = nil, websites: [String]? = nil) {

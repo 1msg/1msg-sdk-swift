@@ -12,22 +12,39 @@ import AnyCodable
 
 public struct SendButtonRequest: Codable, JSONEncodable, Hashable {
 
+    /** Recipient phone with country code. Use phone or chatId. */
     public var phone: String?
+    /** Recipient chat ID (`phone@c.us`, group `@g.us`, or BSUID `@lid`). Use phone or chatId. */
+    public var chatId: String?
+    /** Optional Cloud API wamid to quote */
+    public var quotedMsgId: String?
     public var body: String?
     public var footer: String?
+    /** Optional interactive header (text/image/video/document) */
+    public var header: [String: AnyCodable]?
+    /** Legacy alias for sections (`[{id,title}]`) */
+    public var buttons: [AnyCodable]?
     public var sections: [SendButtonRequestSectionsInner]?
 
-    public init(phone: String? = nil, body: String? = nil, footer: String? = nil, sections: [SendButtonRequestSectionsInner]? = nil) {
+    public init(phone: String? = nil, chatId: String? = nil, quotedMsgId: String? = nil, body: String? = nil, footer: String? = nil, header: [String: AnyCodable]? = nil, buttons: [AnyCodable]? = nil, sections: [SendButtonRequestSectionsInner]? = nil) {
         self.phone = phone
+        self.chatId = chatId
+        self.quotedMsgId = quotedMsgId
         self.body = body
         self.footer = footer
+        self.header = header
+        self.buttons = buttons
         self.sections = sections
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case phone
+        case chatId
+        case quotedMsgId
         case body
         case footer
+        case header
+        case buttons
         case sections
     }
 
@@ -36,8 +53,12 @@ public struct SendButtonRequest: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(phone, forKey: .phone)
+        try container.encodeIfPresent(chatId, forKey: .chatId)
+        try container.encodeIfPresent(quotedMsgId, forKey: .quotedMsgId)
         try container.encodeIfPresent(body, forKey: .body)
         try container.encodeIfPresent(footer, forKey: .footer)
+        try container.encodeIfPresent(header, forKey: .header)
+        try container.encodeIfPresent(buttons, forKey: .buttons)
         try container.encodeIfPresent(sections, forKey: .sections)
     }
 }

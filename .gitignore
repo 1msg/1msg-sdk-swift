@@ -98,3 +98,10 @@ iOSInjectionProject/
 **/xcshareddata/WorkspaceSettings.xcsettings
 
 # End of https://www.toptal.com/developers/gitignore/api/xcode,swift
+
+.build/
+
+node_modules/
+quality/reports/
+
+.husky/_/

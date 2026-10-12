@@ -16,11 +16,12 @@ open class GroupsAPI {
      Create Group
      
      - parameter token: (query) JWT token or API key for authorization 
+     - parameter createGroupsRequest: (body)  
      - returns: CreateGroups200Response
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    open class func createGroups(token: String) async throws -> CreateGroups200Response {
-        return try await createGroupsWithRequestBuilder(token: token).execute().body
+    open class func createGroups(token: String, createGroupsRequest: CreateGroupsRequest) async throws -> CreateGroups200Response {
+        return try await createGroupsWithRequestBuilder(token: token, createGroupsRequest: createGroupsRequest).execute().body
     }
 
     /**
@@ -30,12 +31,13 @@ open class GroupsAPI {
        - type: apiKey token (QUERY)
        - name: tokenAuth
      - parameter token: (query) JWT token or API key for authorization 
+     - parameter createGroupsRequest: (body)  
      - returns: RequestBuilder<CreateGroups200Response> 
      */
-    open class func createGroupsWithRequestBuilder(token: String) -> RequestBuilder<CreateGroups200Response> {
+    open class func createGroupsWithRequestBuilder(token: String, createGroupsRequest: CreateGroupsRequest) -> RequestBuilder<CreateGroups200Response> {
         let localVariablePath = "/groups"
         let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
-        let localVariableParameters: [String: Any]? = nil
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createGroupsRequest)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
@@ -43,7 +45,7 @@ open class GroupsAPI {
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
-            :
+            "Content-Type": "application/json",
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
@@ -58,30 +60,33 @@ open class GroupsAPI {
      
      - parameter groupId: (path)  
      - parameter token: (query) JWT token or API key for authorization 
+     - parameter createGroupsGroupIdRequest: (body)  
      - returns: [String: AnyCodable]
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    open class func createGroupsGroupId(groupId: String, token: String) async throws -> [String: AnyCodable] {
-        return try await createGroupsGroupIdWithRequestBuilder(groupId: groupId, token: token).execute().body
+    open class func createGroupsGroupId(groupId: String, token: String, createGroupsGroupIdRequest: CreateGroupsGroupIdRequest) async throws -> [String: AnyCodable] {
+        return try await createGroupsGroupIdWithRequestBuilder(groupId: groupId, token: token, createGroupsGroupIdRequest: createGroupsGroupIdRequest).execute().body
     }
 
     /**
      Update Group Info
      - POST /groups/{groupId}
+     - Update group subject, description, and/or profile picture. Path `groupId` is the WABA group id (without `@g.us`). 
      - API Key:
        - type: apiKey token (QUERY)
        - name: tokenAuth
      - parameter groupId: (path)  
      - parameter token: (query) JWT token or API key for authorization 
+     - parameter createGroupsGroupIdRequest: (body)  
      - returns: RequestBuilder<[String: AnyCodable]> 
      */
-    open class func createGroupsGroupIdWithRequestBuilder(groupId: String, token: String) -> RequestBuilder<[String: AnyCodable]> {
+    open class func createGroupsGroupIdWithRequestBuilder(groupId: String, token: String, createGroupsGroupIdRequest: CreateGroupsGroupIdRequest) -> RequestBuilder<[String: AnyCodable]> {
         var localVariablePath = "/groups/{groupId}"
         let groupIdPreEscape = "\(APIHelper.mapValueToPathItem(groupId))"
         let groupIdPostEscape = groupIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{groupId}", with: groupIdPostEscape, options: .literal, range: nil)
         let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
-        let localVariableParameters: [String: Any]? = nil
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createGroupsGroupIdRequest)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
@@ -89,7 +94,7 @@ open class GroupsAPI {
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
-            :
+            "Content-Type": "application/json",
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
@@ -196,11 +201,12 @@ open class GroupsAPI {
      
      - parameter groupId: (path)  
      - parameter token: (query) JWT token or API key for authorization 
+     - parameter fields: (query) Comma-separated group fields to return (optional)
      - returns: [String: AnyCodable]
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    open class func getGroupsGroupId(groupId: String, token: String) async throws -> [String: AnyCodable] {
-        return try await getGroupsGroupIdWithRequestBuilder(groupId: groupId, token: token).execute().body
+    open class func getGroupsGroupId(groupId: String, token: String, fields: String? = nil) async throws -> [String: AnyCodable] {
+        return try await getGroupsGroupIdWithRequestBuilder(groupId: groupId, token: token, fields: fields).execute().body
     }
 
     /**
@@ -211,9 +217,10 @@ open class GroupsAPI {
        - name: tokenAuth
      - parameter groupId: (path)  
      - parameter token: (query) JWT token or API key for authorization 
+     - parameter fields: (query) Comma-separated group fields to return (optional)
      - returns: RequestBuilder<[String: AnyCodable]> 
      */
-    open class func getGroupsGroupIdWithRequestBuilder(groupId: String, token: String) -> RequestBuilder<[String: AnyCodable]> {
+    open class func getGroupsGroupIdWithRequestBuilder(groupId: String, token: String, fields: String? = nil) -> RequestBuilder<[String: AnyCodable]> {
         var localVariablePath = "/groups/{groupId}"
         let groupIdPreEscape = "\(APIHelper.mapValueToPathItem(groupId))"
         let groupIdPostEscape = groupIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -224,6 +231,7 @@ open class GroupsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "token": (wrappedValue: token.encodeToJSON(), isExplode: true),
+            "fields": (wrappedValue: fields?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -287,23 +295,30 @@ open class GroupsAPI {
      Get Groups List
      
      - parameter token: (query) JWT token or API key for authorization 
+     - parameter limit: (query) Max groups to return (optional)
+     - parameter before: (query) Cursor for the previous page (optional)
+     - parameter after: (query) Cursor for the next page (optional)
      - returns: [String: AnyCodable]
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    open class func listGroups(token: String) async throws -> [String: AnyCodable] {
-        return try await listGroupsWithRequestBuilder(token: token).execute().body
+    open class func listGroups(token: String, limit: Int? = nil, before: String? = nil, after: String? = nil) async throws -> [String: AnyCodable] {
+        return try await listGroupsWithRequestBuilder(token: token, limit: limit, before: before, after: after).execute().body
     }
 
     /**
      Get Groups List
      - GET /groups
+     - List WhatsApp groups for this channel. Paginate with `limit`, `before`, and `after`.
      - API Key:
        - type: apiKey token (QUERY)
        - name: tokenAuth
      - parameter token: (query) JWT token or API key for authorization 
+     - parameter limit: (query) Max groups to return (optional)
+     - parameter before: (query) Cursor for the previous page (optional)
+     - parameter after: (query) Cursor for the next page (optional)
      - returns: RequestBuilder<[String: AnyCodable]> 
      */
-    open class func listGroupsWithRequestBuilder(token: String) -> RequestBuilder<[String: AnyCodable]> {
+    open class func listGroupsWithRequestBuilder(token: String, limit: Int? = nil, before: String? = nil, after: String? = nil) -> RequestBuilder<[String: AnyCodable]> {
         let localVariablePath = "/groups"
         let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -311,6 +326,9 @@ open class GroupsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "token": (wrappedValue: token.encodeToJSON(), isExplode: true),
+            "limit": (wrappedValue: limit?.encodeToJSON(), isExplode: true),
+            "before": (wrappedValue: before?.encodeToJSON(), isExplode: true),
+            "after": (wrappedValue: after?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

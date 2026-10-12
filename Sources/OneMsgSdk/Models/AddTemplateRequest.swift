@@ -12,9 +12,13 @@ import AnyCodable
 
 public struct AddTemplateRequest: Codable, JSONEncodable, Hashable {
 
+    /** Template name */
     public var name: String?
+    /** MARKETING, UTILITY, or AUTHENTICATION */
     public var category: String?
+    /** Template language code (e.g. en_US) */
     public var language: String?
+    /** Template components (HEADER, BODY, FOOTER, BUTTONS, CAROUSEL) */
     public var components: [[String: AnyCodable]]?
 
     public init(name: String? = nil, category: String? = nil, language: String? = nil, components: [[String: AnyCodable]]? = nil) {
