@@ -34,7 +34,7 @@ jobs:
       - run: npm run lint:duplicates:full
       - run: node quality/generator/generate.mjs
       - run: node quality/generator/verify-negative.mjs
-      - uses: swift-actions/setup-swift@v2
+      - uses: swift-actions/setup-swift@v3
         with:
           swift-version: "6.3.2"
       - run: swift package resolve --force-resolved-versions
