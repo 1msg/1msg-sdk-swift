@@ -98,3 +98,13 @@ iOSInjectionProject/
 **/xcshareddata/WorkspaceSettings.xcsettings
 
 # End of https://www.toptal.com/developers/gitignore/api/xcode,swift
+
+.build/
+
+node_modules/
+quality/reports/
+
+.husky/_/
+
+# Local shared-tool dependency links are never repository content.
+tools/quality/node_modules

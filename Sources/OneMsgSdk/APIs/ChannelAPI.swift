@@ -13,6 +13,50 @@ import AnyCodable
 open class ChannelAPI {
 
     /**
+     Update channel settings
+     
+     - parameter token: (query) JWT token or API key for authorization 
+     - parameter createSettingsRequest: (body)  
+     - returns: [String: AnyCodable]
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func createSettings(token: String, createSettingsRequest: CreateSettingsRequest) async throws -> [String: AnyCodable] {
+        return try await createSettingsWithRequestBuilder(token: token, createSettingsRequest: createSettingsRequest).execute().body
+    }
+
+    /**
+     Update channel settings
+     - POST /settings
+     - Update channel settings. Only send fields you want to change.  `webhookUrl` **replaces** the stored list (one URL string, or up to 5 URLs as an array). Passing an empty value clears webhooks. Repeating the same URL(s) also clears a sticky auto-disable. With several URLs, send the complete array to re-enable one of them — omitting a URL removes it from the channel. 
+     - API Key:
+       - type: apiKey token (QUERY)
+       - name: tokenAuth
+     - parameter token: (query) JWT token or API key for authorization 
+     - parameter createSettingsRequest: (body)  
+     - returns: RequestBuilder<[String: AnyCodable]> 
+     */
+    open class func createSettingsWithRequestBuilder(token: String, createSettingsRequest: CreateSettingsRequest) -> RequestBuilder<[String: AnyCodable]> {
+        let localVariablePath = "/settings"
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createSettingsRequest)
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "token": (wrappedValue: token.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "Content-Type": "application/json",
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
      Get conversational automation settings
      
      - parameter token: (query) JWT token or API key for authorization 
@@ -58,24 +102,24 @@ open class ChannelAPI {
      Get channel status
      
      - parameter token: (query) JWT token or API key for authorization 
-     - returns: [String: AnyCodable]
+     - returns: GetStatus200Response
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    open class func getStatus(token: String) async throws -> [String: AnyCodable] {
+    open class func getStatus(token: String) async throws -> GetStatus200Response {
         return try await getStatusWithRequestBuilder(token: token).execute().body
     }
 
     /**
      Get channel status
      - GET /status
-     - Returns WhatsApp Business API client connection status.
+     - Return WhatsApp Cloud API connection status for this channel (`connected` when the number can send). May include `accountStatus`, messaging limit, and MM Lite availability.  Optional `health_status_warning` appears only when Meta Graph health could not be loaded and a soft `connected` response is returned. Omitted on the normal path and when health details are not applicable for the channel — never an internal provider/transport name. 
      - API Key:
        - type: apiKey token (QUERY)
        - name: tokenAuth
      - parameter token: (query) JWT token or API key for authorization 
-     - returns: RequestBuilder<[String: AnyCodable]> 
+     - returns: RequestBuilder<GetStatus200Response> 
      */
-    open class func getStatusWithRequestBuilder(token: String) -> RequestBuilder<[String: AnyCodable]> {
+    open class func getStatusWithRequestBuilder(token: String) -> RequestBuilder<GetStatus200Response> {
         let localVariablePath = "/status"
         let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -91,7 +135,49 @@ open class ChannelAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<GetStatus200Response>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get channel settings
+     
+     - parameter token: (query) JWT token or API key for authorization 
+     - returns: ListSettings200Response
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func listSettings(token: String) async throws -> ListSettings200Response {
+        return try await listSettingsWithRequestBuilder(token: token).execute().body
+    }
+
+    /**
+     Get channel settings
+     - GET /settings
+     - Return channel settings: webhook URL(s), delivery flags, and analytics toggles.  Auto-disable / circuit state matches `GET /webhook`. **Prefer `webhookStatuses`** (one row per configured URL). The breaker is per URL, not per channel.  Channel-level `haveDisabledWebhooks` is `true` when **at least one** URL in `webhookUrl` is sticky auto-disabled — not \"the channel is dead\". Live URLs still receive events. Top-level `circuitState` / `reason` / `fails` / `trips` are a compatibility summary of one URL (first sticky-disabled, else first configured).  This is the same `GET /settings` endpoint as the REST API (previously missing from MCP). 
+     - API Key:
+       - type: apiKey token (QUERY)
+       - name: tokenAuth
+     - parameter token: (query) JWT token or API key for authorization 
+     - returns: RequestBuilder<ListSettings200Response> 
+     */
+    open class func listSettingsWithRequestBuilder(token: String) -> RequestBuilder<ListSettings200Response> {
+        let localVariablePath = "/settings"
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "token": (wrappedValue: token.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ListSettings200Response>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

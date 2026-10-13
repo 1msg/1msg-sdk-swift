@@ -26,7 +26,7 @@ open class ProfileAPI {
     /**
      Get Profile Info
      - GET /me
-     - Get WhatsApp Business Account profile information
+     - Return the WhatsApp Business profile for this channel: About, address, description, email, phone, websites, industry (`vertical`), and profile photo URL. 
      - API Key:
        - type: apiKey token (QUERY)
        - name: tokenAuth
@@ -58,11 +58,11 @@ open class ProfileAPI {
      Update profile info
      
      - parameter token: (query) JWT token or API key for authorization 
-     - parameter updateMeRequest: (body)  (optional)
-     - returns: [String: AnyCodable]
+     - parameter updateMeRequest: (body)  
+     - returns: UpdateMe200Response
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    open class func updateMe(token: String, updateMeRequest: UpdateMeRequest? = nil) async throws -> [String: AnyCodable] {
+    open class func updateMe(token: String, updateMeRequest: UpdateMeRequest) async throws -> UpdateMe200Response {
         return try await updateMeWithRequestBuilder(token: token, updateMeRequest: updateMeRequest).execute().body
     }
 
@@ -74,10 +74,10 @@ open class ProfileAPI {
        - type: apiKey token (QUERY)
        - name: tokenAuth
      - parameter token: (query) JWT token or API key for authorization 
-     - parameter updateMeRequest: (body)  (optional)
-     - returns: RequestBuilder<[String: AnyCodable]> 
+     - parameter updateMeRequest: (body)  
+     - returns: RequestBuilder<UpdateMe200Response> 
      */
-    open class func updateMeWithRequestBuilder(token: String, updateMeRequest: UpdateMeRequest? = nil) -> RequestBuilder<[String: AnyCodable]> {
+    open class func updateMeWithRequestBuilder(token: String, updateMeRequest: UpdateMeRequest) -> RequestBuilder<UpdateMe200Response> {
         let localVariablePath = "/me"
         let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: updateMeRequest)
@@ -93,7 +93,7 @@ open class ProfileAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UpdateMe200Response>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

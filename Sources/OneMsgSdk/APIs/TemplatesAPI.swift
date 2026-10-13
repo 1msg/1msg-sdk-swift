@@ -17,24 +17,25 @@ open class TemplatesAPI {
      
      - parameter token: (query) JWT token or API key for authorization 
      - parameter addTemplateRequest: (body)  (optional)
-     - returns: [String: AnyCodable]
+     - returns: AddTemplate200Response
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    open class func addTemplate(token: String, addTemplateRequest: AddTemplateRequest? = nil) async throws -> [String: AnyCodable] {
+    open class func addTemplate(token: String, addTemplateRequest: AddTemplateRequest? = nil) async throws -> AddTemplate200Response {
         return try await addTemplateWithRequestBuilder(token: token, addTemplateRequest: addTemplateRequest).execute().body
     }
 
     /**
      Create message template
      - POST /addTemplate
+     - Create a WABA message template (`name`, `category`, `language`, `components`). After create, Meta reviews the template; list it with `GET /templates`. 
      - API Key:
        - type: apiKey token (QUERY)
        - name: tokenAuth
      - parameter token: (query) JWT token or API key for authorization 
      - parameter addTemplateRequest: (body)  (optional)
-     - returns: RequestBuilder<[String: AnyCodable]> 
+     - returns: RequestBuilder<AddTemplate200Response> 
      */
-    open class func addTemplateWithRequestBuilder(token: String, addTemplateRequest: AddTemplateRequest? = nil) -> RequestBuilder<[String: AnyCodable]> {
+    open class func addTemplateWithRequestBuilder(token: String, addTemplateRequest: AddTemplateRequest? = nil) -> RequestBuilder<AddTemplate200Response> {
         let localVariablePath = "/addTemplate"
         let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: addTemplateRequest)
@@ -50,32 +51,48 @@ open class TemplatesAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<AddTemplate200Response>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     * enum for parameter sort
+     */
+    public enum Sort_listTemplates: String, CaseIterable {
+        case id = "id"
+        case name = "name"
+        case status = "status"
     }
 
     /**
      Get templates list
      
      - parameter token: (query) JWT token or API key for authorization 
+     - parameter limit: (query)  (optional)
+     - parameter offset: (query)  (optional)
+     - parameter sort: (query) Sort field (&#x60;id&#x60;, &#x60;name&#x60;, or &#x60;status&#x60;) (optional)
      - returns: ListTemplates200Response
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    open class func listTemplates(token: String) async throws -> ListTemplates200Response {
-        return try await listTemplatesWithRequestBuilder(token: token).execute().body
+    open class func listTemplates(token: String, limit: Int? = nil, offset: Int? = nil, sort: Sort_listTemplates? = nil) async throws -> ListTemplates200Response {
+        return try await listTemplatesWithRequestBuilder(token: token, limit: limit, offset: offset, sort: sort).execute().body
     }
 
     /**
      Get templates list
      - GET /templates
+     - List message templates. Paginate with `limit` / `offset`; sort by `id`, `name`, or `status`.
      - API Key:
        - type: apiKey token (QUERY)
        - name: tokenAuth
      - parameter token: (query) JWT token or API key for authorization 
+     - parameter limit: (query)  (optional)
+     - parameter offset: (query)  (optional)
+     - parameter sort: (query) Sort field (&#x60;id&#x60;, &#x60;name&#x60;, or &#x60;status&#x60;) (optional)
      - returns: RequestBuilder<ListTemplates200Response> 
      */
-    open class func listTemplatesWithRequestBuilder(token: String) -> RequestBuilder<ListTemplates200Response> {
+    open class func listTemplatesWithRequestBuilder(token: String, limit: Int? = nil, offset: Int? = nil, sort: Sort_listTemplates? = nil) -> RequestBuilder<ListTemplates200Response> {
         let localVariablePath = "/templates"
         let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -83,6 +100,9 @@ open class TemplatesAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "token": (wrappedValue: token.encodeToJSON(), isExplode: true),
+            "limit": (wrappedValue: limit?.encodeToJSON(), isExplode: true),
+            "offset": (wrappedValue: offset?.encodeToJSON(), isExplode: true),
+            "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -100,28 +120,29 @@ open class TemplatesAPI {
      Remove message template
      
      - parameter token: (query) JWT token or API key for authorization 
-     - parameter requestBody: (body)  (optional)
+     - parameter removeTemplateRequest: (body)  
      - returns: [String: AnyCodable]
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    open class func removeTemplate(token: String, requestBody: [String: AnyCodable]? = nil) async throws -> [String: AnyCodable] {
-        return try await removeTemplateWithRequestBuilder(token: token, requestBody: requestBody).execute().body
+    open class func removeTemplate(token: String, removeTemplateRequest: RemoveTemplateRequest) async throws -> [String: AnyCodable] {
+        return try await removeTemplateWithRequestBuilder(token: token, removeTemplateRequest: removeTemplateRequest).execute().body
     }
 
     /**
      Remove message template
      - POST /removeTemplate
+     - Delete a message template by `name` (all language versions of that name).
      - API Key:
        - type: apiKey token (QUERY)
        - name: tokenAuth
      - parameter token: (query) JWT token or API key for authorization 
-     - parameter requestBody: (body)  (optional)
+     - parameter removeTemplateRequest: (body)  
      - returns: RequestBuilder<[String: AnyCodable]> 
      */
-    open class func removeTemplateWithRequestBuilder(token: String, requestBody: [String: AnyCodable]? = nil) -> RequestBuilder<[String: AnyCodable]> {
+    open class func removeTemplateWithRequestBuilder(token: String, removeTemplateRequest: RemoveTemplateRequest) -> RequestBuilder<[String: AnyCodable]> {
         let localVariablePath = "/removeTemplate"
         let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: requestBody)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: removeTemplateRequest)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
@@ -154,7 +175,7 @@ open class TemplatesAPI {
     /**
      Send Template Message
      - POST /sendTemplate
-     - Send a WhatsApp template message (works outside the 24-hour session window).  Supported `params` button `sub_type` values include: `url`, `quick_reply`, `copy_code` / `coupon_code`, `catalog`, `flow`, `limited_time_offer`, and **`order_details`** (WhatsApp Payments **India only** — requires an approved Utility template with an ORDER_DETAILS button).  For India order/invoice payments outside 24h, include a button component:  ```json {   \"type\": \"button\",   \"sub_type\": \"order_details\",   \"index\": 0,   \"parameters\": [{     \"type\": \"action\",     \"action\": { \"order_details\": { \"reference_id\": \"...\", \"currency\": \"INR\", \"order\": {} } }   }] } ```  Convenience wrapper with structured fields: `POST /sendOrderDetails`. 
+     - Send a WhatsApp **template** message (works outside the 24-hour session window).  Use this tool — not `send_message` — when the 24h session is closed.  `params` MUST be Cloud API **component objects**, never a flat list of strings and never the old On-Prem `hsm` / `localizable_params` format.  Example body variable `{{1}}`:  ```json {   \"type\": \"body\",   \"parameters\": [{ \"type\": \"text\", \"text\": \"Ivan\" }] } ```  Do not send `\"type\": \"hsm\"` and do not send `params: [\"Ivan\", \"123\"]`.  Supported `params` button `sub_type` values include: `url`, `quick_reply`, `copy_code` / `coupon_code`, `catalog`, `flow`, `limited_time_offer`, and **`order_details`** (WhatsApp Payments **India only** — requires an approved Utility template with an ORDER_DETAILS button).  Convenience wrapper with structured fields: `POST /sendOrderDetails`. 
      - API Key:
        - type: apiKey token (QUERY)
        - name: tokenAuth
