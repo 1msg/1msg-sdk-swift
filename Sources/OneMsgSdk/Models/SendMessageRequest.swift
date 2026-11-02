@@ -15,13 +15,12 @@ public struct SendMessageRequest: Codable, JSONEncodable, Hashable {
 
     public static let bodyRule = StringRule(minLength: 1, maxLength: 4096, pattern: nil)
     public static let quotedMsgIdRule = StringRule(minLength: nil, maxLength: nil, pattern: "/^wamid\\..+$/")
-    public static let chatIdRule = StringRule(minLength: nil, maxLength: nil, pattern: "/^[0-9]+@[cg]\\.us$/")
     public static let phoneRule = NumericRule<Int>(minimum: 1000000000, exclusiveMinimum: false, maximum: 999999999999999, exclusiveMaximum: false, multipleOf: nil)
     /** Message text, UTF-8 or UTF-16 string with emoji */
     public var body: String
     /** Message ID to quote/reply to (Cloud API wamid) */
     public var quotedMsgId: String?
-    /** Chat ID in format: phone@c.us (individual) or phone@g.us (group) */
+    /** Recipient chat ID: phone@c.us, group@g.us, or BSUID@lid */
     public var chatId: String?
     /** Phone number starting with country code (alternative to chatId) */
     public var phone: Int?

@@ -12,14 +12,20 @@ import AnyCodable
 
 public struct SendCarouselRequest1: Codable, JSONEncodable, Hashable {
 
+    public static let cardsRule = ArrayRule(minItems: 2, maxItems: 10, uniqueItems: false)
+    /** Text shown above the carousel */
     public var body: String?
-    public var params: [AnyCodable]
+    /** Preferred. 2–10 carousel cards. */
+    public var cards: [[String: AnyCodable]]?
+    /** Template-like alternative — include a CAROUSEL component with cards */
+    public var params: [AnyCodable]?
     public var quotedMsgId: String?
     public var chatId: String?
     public var phone: Int?
 
-    public init(body: String? = nil, params: [AnyCodable], quotedMsgId: String? = nil, chatId: String? = nil, phone: Int? = nil) {
+    public init(body: String? = nil, cards: [[String: AnyCodable]]? = nil, params: [AnyCodable]? = nil, quotedMsgId: String? = nil, chatId: String? = nil, phone: Int? = nil) {
         self.body = body
+        self.cards = cards
         self.params = params
         self.quotedMsgId = quotedMsgId
         self.chatId = chatId
@@ -28,6 +34,7 @@ public struct SendCarouselRequest1: Codable, JSONEncodable, Hashable {
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case body
+        case cards
         case params
         case quotedMsgId
         case chatId
@@ -39,7 +46,8 @@ public struct SendCarouselRequest1: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(body, forKey: .body)
-        try container.encode(params, forKey: .params)
+        try container.encodeIfPresent(cards, forKey: .cards)
+        try container.encodeIfPresent(params, forKey: .params)
         try container.encodeIfPresent(quotedMsgId, forKey: .quotedMsgId)
         try container.encodeIfPresent(chatId, forKey: .chatId)
         try container.encodeIfPresent(phone, forKey: .phone)

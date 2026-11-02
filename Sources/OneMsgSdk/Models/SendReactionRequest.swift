@@ -12,18 +12,23 @@ import AnyCodable
 
 public struct SendReactionRequest: Codable, JSONEncodable, Hashable {
 
+    /** Recipient phone with country code. Use phone or chatId. */
     public var phone: String?
+    /** Recipient chat ID (`phone@c.us`, group `@g.us`, or BSUID `@lid`). Use phone or chatId. */
+    public var chatId: String?
     public var body: String?
     public var quotedMsgId: String?
 
-    public init(phone: String? = nil, body: String? = nil, quotedMsgId: String? = nil) {
+    public init(phone: String? = nil, chatId: String? = nil, body: String? = nil, quotedMsgId: String? = nil) {
         self.phone = phone
+        self.chatId = chatId
         self.body = body
         self.quotedMsgId = quotedMsgId
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case phone
+        case chatId
         case body
         case quotedMsgId
     }
@@ -33,6 +38,7 @@ public struct SendReactionRequest: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(phone, forKey: .phone)
+        try container.encodeIfPresent(chatId, forKey: .chatId)
         try container.encodeIfPresent(body, forKey: .body)
         try container.encodeIfPresent(quotedMsgId, forKey: .quotedMsgId)
     }

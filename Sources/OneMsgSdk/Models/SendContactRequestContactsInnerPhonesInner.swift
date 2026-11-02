@@ -12,6 +12,7 @@ import AnyCodable
 
 public struct SendContactRequestContactsInnerPhonesInner: Codable, JSONEncodable, Hashable {
 
+    /** E.164 phone (`+79181976551`). Not a timestamp. */
     public var phone: String?
     public var type: String?
     public var waId: String?

@@ -12,11 +12,19 @@ import AnyCodable
 
 public struct SendTemplateRequest: Codable, JSONEncodable, Hashable {
 
+    /** Approved template name (template `name`, not the old HSM `element_name`) */
     public var template: String?
     public var language: SendTemplateRequestLanguage?
+    /** Template namespace from `list_templates` */
     public var namespace: String?
-    public var params: [AnyCodable]?
+    /** Template components in WhatsApp Cloud API format. Each item is an object with `type` (`body`, `header`, `button`) and `parameters` (objects with `type` + `text` / media / action). Never a list of strings. Never HSM `localizable_params`.  */
+    public var params: [[String: AnyCodable]]?
+    /** Recipient phone with country code (use phone or chatId) */
     public var phone: String?
+    /** Recipient chat ID (`phone@c.us`, group `@g.us`, or BSUID `@lid`). Use phone or chatId. */
+    public var chatId: String?
+    /** Optional Cloud API wamid to quote */
+    public var quotedMsgId: String?
     /** Force Marketing Messages API (POST marketing_messages). If omitted: auto for MARKETING category when channel has mm_lite_enabled and mm_lite_available service settings.  */
     public var useMMlite: Bool?
     /** Sets message_activity_sharing on WABA payload. Enables click tracking webhooks. Requires MM Lite path. Ignored on Cloud API fallback.  */
@@ -24,12 +32,14 @@ public struct SendTemplateRequest: Codable, JSONEncodable, Hashable {
     /** Template message TTL in seconds (message_send_ttl_seconds). MARKETING via MM Lite: 43200–2592000. AUTHENTICATION: 30–900. UTILITY: 30–43200. AUTH/UTILITY also accept -1 (30-day custom TTL).  */
     public var messageSendTtlSeconds: Int?
 
-    public init(template: String? = nil, language: SendTemplateRequestLanguage? = nil, namespace: String? = nil, params: [AnyCodable]? = nil, phone: String? = nil, useMMlite: Bool? = nil, messageActivitySharing: Bool? = nil, messageSendTtlSeconds: Int? = nil) {
+    public init(template: String? = nil, language: SendTemplateRequestLanguage? = nil, namespace: String? = nil, params: [[String: AnyCodable]]? = nil, phone: String? = nil, chatId: String? = nil, quotedMsgId: String? = nil, useMMlite: Bool? = nil, messageActivitySharing: Bool? = nil, messageSendTtlSeconds: Int? = nil) {
         self.template = template
         self.language = language
         self.namespace = namespace
         self.params = params
         self.phone = phone
+        self.chatId = chatId
+        self.quotedMsgId = quotedMsgId
         self.useMMlite = useMMlite
         self.messageActivitySharing = messageActivitySharing
         self.messageSendTtlSeconds = messageSendTtlSeconds
@@ -41,6 +51,8 @@ public struct SendTemplateRequest: Codable, JSONEncodable, Hashable {
         case namespace
         case params
         case phone
+        case chatId
+        case quotedMsgId
         case useMMlite
         case messageActivitySharing
         case messageSendTtlSeconds
@@ -55,6 +67,8 @@ public struct SendTemplateRequest: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(namespace, forKey: .namespace)
         try container.encodeIfPresent(params, forKey: .params)
         try container.encodeIfPresent(phone, forKey: .phone)
+        try container.encodeIfPresent(chatId, forKey: .chatId)
+        try container.encodeIfPresent(quotedMsgId, forKey: .quotedMsgId)
         try container.encodeIfPresent(useMMlite, forKey: .useMMlite)
         try container.encodeIfPresent(messageActivitySharing, forKey: .messageActivitySharing)
         try container.encodeIfPresent(messageSendTtlSeconds, forKey: .messageSendTtlSeconds)

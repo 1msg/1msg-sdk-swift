@@ -26,7 +26,7 @@ open class WebhooksAPI {
     /**
      Get webhook URL
      - GET /webhook
-     - Returns the configured client webhook URL for this channel.
+     - Return the webhook URL(s) currently configured for this channel, plus delivery status for each URL.  `webhookUrl` is a string when a single URL is set, an array of strings when multiple URLs are configured, or `null` if none is set.  **Prefer `webhookStatuses`.** The circuit breaker is per URL, not per channel. If 1 of 4 URLs is sticky-disabled, that URL is skipped; the other three still receive events. Send/receive are not affected.  Channel-level `haveDisabledWebhooks`, `circuitState`, `reason`, `fails`, `trips`, and timestamps are a compatibility summary of **one** URL (the first sticky-disabled URL, else the first configured URL). They are not \"the channel is dead\".  - `haveDisabledWebhooks` — `true` when **at least one** URL in `webhookUrl` is   sticky auto-disabled. Live URLs still get events. - `circuitState` — compressed scalar for that same primary URL:   `ok` | `degraded` | `open` | `half_open` | `disabled`. - `disabledWebhooks` — currently configured URLs that are sticky-disabled   (subset of `webhookUrl`). - `webhookStatuses` — one row per currently configured URL. Use this array   to see which endpoints are live vs skipped. - `fails` / `trips` / `firstFailAt` — **diagnostics for support**, not product   UI. `fails` = failures in a rolling ~10 minute window (not lifetime).   `trips` = failed recovery probes on the 15 min → 1 h → 6 h schedule (sticky   disable after 3). Clients can ignore these and use `webhookStatuses` +   `disabledWebhooks` only.  Sticky disable skips delivery; it does not unconfigure the URL (it stays in `webhookUrl`). Re-enable with `POST /webhook` or `POST /settings`. Those endpoints **replace** the whole list — with multiple URLs, send the full array. 
      - API Key:
        - type: apiKey token (QUERY)
        - name: tokenAuth
@@ -58,29 +58,29 @@ open class WebhooksAPI {
      Set webhook URL
      
      - parameter token: (query) JWT token or API key for authorization 
-     - parameter getWebhook200Response: (body)  (optional)
-     - returns: [String: AnyCodable]
+     - parameter setWebhookRequest: (body)  
+     - returns: SetWebhook200Response
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    open class func setWebhook(token: String, getWebhook200Response: GetWebhook200Response? = nil) async throws -> [String: AnyCodable] {
-        return try await setWebhookWithRequestBuilder(token: token, getWebhook200Response: getWebhook200Response).execute().body
+    open class func setWebhook(token: String, setWebhookRequest: SetWebhookRequest) async throws -> SetWebhook200Response {
+        return try await setWebhookWithRequestBuilder(token: token, setWebhookRequest: setWebhookRequest).execute().body
     }
 
     /**
      Set webhook URL
      - POST /webhook
-     - Configure the client webhook URL for inbound events.  WhatsApp **Calling** events (`field=calls`) are forwarded as passthrough payloads with `type: \"calls\"` and `instanceId` (connect / status / terminate). Call permission replies arrive on the normal messages path (`call_permission_reply`). Details: **Calling** tag. 
+     - Set the client webhook URL that receives inbound events for this channel.  **Replaces** the stored webhook list (it does not append). To deliver the same events to several endpoints, pass an array in `webhookUrl` (max 5) or use `POST /settings`. With several URLs already configured, posting only the disabled URL **drops the others** — send the complete array to re-enable one of many.  Incoming payloads include messages, delivery ACKs, group updates, coexistence echoes, and calling events. WhatsApp Calling payloads (`type: \"calls\"`) are documented under the **Calling** tag. Call permission replies arrive on the normal messages path (`call_permission_reply`).  Repeating `POST /webhook` with the same URL(s) clears an auto-disable (self-serve re-enable). Send/receive are not affected by webhook auto-disable. 
      - API Key:
        - type: apiKey token (QUERY)
        - name: tokenAuth
      - parameter token: (query) JWT token or API key for authorization 
-     - parameter getWebhook200Response: (body)  (optional)
-     - returns: RequestBuilder<[String: AnyCodable]> 
+     - parameter setWebhookRequest: (body)  
+     - returns: RequestBuilder<SetWebhook200Response> 
      */
-    open class func setWebhookWithRequestBuilder(token: String, getWebhook200Response: GetWebhook200Response? = nil) -> RequestBuilder<[String: AnyCodable]> {
+    open class func setWebhookWithRequestBuilder(token: String, setWebhookRequest: SetWebhookRequest) -> RequestBuilder<SetWebhook200Response> {
         let localVariablePath = "/webhook"
         let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: getWebhook200Response)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: setWebhookRequest)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
@@ -93,7 +93,7 @@ open class WebhooksAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<SetWebhook200Response>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

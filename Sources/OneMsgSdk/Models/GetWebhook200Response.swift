@@ -12,14 +12,65 @@ import AnyCodable
 
 public struct GetWebhook200Response: Codable, JSONEncodable, Hashable {
 
-    public var webhookUrl: String?
+    public enum CircuitState: String, Codable, CaseIterable {
+        case ok = "ok"
+        case degraded = "degraded"
+        case _open = "open"
+        case halfOpen = "half_open"
+        case disabled = "disabled"
+    }
+    public var webhookUrl: GetWebhook200ResponseWebhookUrl?
+    /** `true` when at least one URL in `webhookUrl` is sticky auto-disabled. Not \"the channel is dead\": other configured URLs still receive events. Send/receive are unaffected.  */
+    public var haveDisabledWebhooks: Bool?
+    /** Compatibility scalar for **one** URL (first sticky-disabled, else first configured). Not the channel as a whole. Prefer `webhookStatuses[].circuitState`.  */
+    public var circuitState: CircuitState?
+    /** Last qualifying fail reason of the summary URL (same URL as `circuitState`) */
+    public var reason: String?
+    /** Diagnostic only (summary URL). Qualifying failures in the rolling ~10 minute breaker window — not lifetime and not customer retries. Prefer `webhookStatuses` / `disabledWebhooks`.  */
+    public var fails: Int?
+    /** Diagnostic only (summary URL). Failed recovery probes (≈15 min → 1 h → 6 h). Sticky disable after 3. Not a blind unblock timer.  */
+    public var trips: Int?
+    /** Epoch milliseconds when the summary URL became sticky-disabled */
+    public var disabledAt: Int?
+    /** Diagnostic only (summary URL). Epoch ms of the first fail in the current ~10 minute window (pairs with `fails`).  */
+    public var firstFailAt: Int?
+    /** Last HTTP status from the summary URL, when known */
+    public var lastStatus: Int?
+    /** Epoch milliseconds of the next half-open probe for the summary URL, if any */
+    public var nextProbeAt: Int?
+    /** Currently configured URLs that are sticky auto-disabled (subset of `webhookUrl`). Does not include leftover URLs that are no longer configured.  */
+    public var disabledWebhooks: [[String: AnyCodable]]?
+    /** One entry per currently configured URL. Prefer this over top-level `haveDisabledWebhooks` / `circuitState` when more than one webhook is set.  */
+    public var webhookStatuses: [WebhookUrlStatus]?
 
-    public init(webhookUrl: String? = nil) {
+    public init(webhookUrl: GetWebhook200ResponseWebhookUrl? = nil, haveDisabledWebhooks: Bool? = nil, circuitState: CircuitState? = nil, reason: String? = nil, fails: Int? = nil, trips: Int? = nil, disabledAt: Int? = nil, firstFailAt: Int? = nil, lastStatus: Int? = nil, nextProbeAt: Int? = nil, disabledWebhooks: [[String: AnyCodable]]? = nil, webhookStatuses: [WebhookUrlStatus]? = nil) {
         self.webhookUrl = webhookUrl
+        self.haveDisabledWebhooks = haveDisabledWebhooks
+        self.circuitState = circuitState
+        self.reason = reason
+        self.fails = fails
+        self.trips = trips
+        self.disabledAt = disabledAt
+        self.firstFailAt = firstFailAt
+        self.lastStatus = lastStatus
+        self.nextProbeAt = nextProbeAt
+        self.disabledWebhooks = disabledWebhooks
+        self.webhookStatuses = webhookStatuses
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case webhookUrl
+        case haveDisabledWebhooks
+        case circuitState
+        case reason
+        case fails
+        case trips
+        case disabledAt
+        case firstFailAt
+        case lastStatus
+        case nextProbeAt
+        case disabledWebhooks
+        case webhookStatuses
     }
 
     public var additionalProperties: [String: AnyCodable] = [:]
@@ -42,6 +93,17 @@ public struct GetWebhook200Response: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(webhookUrl, forKey: .webhookUrl)
+        try container.encodeIfPresent(haveDisabledWebhooks, forKey: .haveDisabledWebhooks)
+        try container.encodeIfPresent(circuitState, forKey: .circuitState)
+        try container.encodeIfPresent(reason, forKey: .reason)
+        try container.encodeIfPresent(fails, forKey: .fails)
+        try container.encodeIfPresent(trips, forKey: .trips)
+        try container.encodeIfPresent(disabledAt, forKey: .disabledAt)
+        try container.encodeIfPresent(firstFailAt, forKey: .firstFailAt)
+        try container.encodeIfPresent(lastStatus, forKey: .lastStatus)
+        try container.encodeIfPresent(nextProbeAt, forKey: .nextProbeAt)
+        try container.encodeIfPresent(disabledWebhooks, forKey: .disabledWebhooks)
+        try container.encodeIfPresent(webhookStatuses, forKey: .webhookStatuses)
         var additionalPropertiesContainer = encoder.container(keyedBy: String.self)
         try additionalPropertiesContainer.encodeMap(additionalProperties)
     }
@@ -51,9 +113,31 @@ public struct GetWebhook200Response: Codable, JSONEncodable, Hashable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        webhookUrl = try container.decodeIfPresent(String.self, forKey: .webhookUrl)
+        webhookUrl = try container.decodeIfPresent(GetWebhook200ResponseWebhookUrl.self, forKey: .webhookUrl)
+        haveDisabledWebhooks = try container.decodeIfPresent(Bool.self, forKey: .haveDisabledWebhooks)
+        circuitState = try container.decodeIfPresent(CircuitState.self, forKey: .circuitState)
+        reason = try container.decodeIfPresent(String.self, forKey: .reason)
+        fails = try container.decodeIfPresent(Int.self, forKey: .fails)
+        trips = try container.decodeIfPresent(Int.self, forKey: .trips)
+        disabledAt = try container.decodeIfPresent(Int.self, forKey: .disabledAt)
+        firstFailAt = try container.decodeIfPresent(Int.self, forKey: .firstFailAt)
+        lastStatus = try container.decodeIfPresent(Int.self, forKey: .lastStatus)
+        nextProbeAt = try container.decodeIfPresent(Int.self, forKey: .nextProbeAt)
+        disabledWebhooks = try container.decodeIfPresent([[String: AnyCodable]].self, forKey: .disabledWebhooks)
+        webhookStatuses = try container.decodeIfPresent([WebhookUrlStatus].self, forKey: .webhookStatuses)
         var nonAdditionalPropertyKeys = Set<String>()
         nonAdditionalPropertyKeys.insert("webhookUrl")
+        nonAdditionalPropertyKeys.insert("haveDisabledWebhooks")
+        nonAdditionalPropertyKeys.insert("circuitState")
+        nonAdditionalPropertyKeys.insert("reason")
+        nonAdditionalPropertyKeys.insert("fails")
+        nonAdditionalPropertyKeys.insert("trips")
+        nonAdditionalPropertyKeys.insert("disabledAt")
+        nonAdditionalPropertyKeys.insert("firstFailAt")
+        nonAdditionalPropertyKeys.insert("lastStatus")
+        nonAdditionalPropertyKeys.insert("nextProbeAt")
+        nonAdditionalPropertyKeys.insert("disabledWebhooks")
+        nonAdditionalPropertyKeys.insert("webhookStatuses")
         let additionalPropertiesContainer = try decoder.container(keyedBy: String.self)
         additionalProperties = try additionalPropertiesContainer.decodeMap(AnyCodable.self, excludedKeys: nonAdditionalPropertyKeys)
     }

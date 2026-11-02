@@ -70,28 +70,29 @@ open class MessagingAPI {
      Upload media
      
      - parameter token: (query) JWT token or API key for authorization 
-     - parameter requestBody: (body)  (optional)
-     - returns: Void
+     - parameter createUploadMediaRequest: (body)  
+     - returns: CreateUploadMedia200Response
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    open class func createUploadMedia(token: String, requestBody: [String: AnyCodable]? = nil) async throws {
-        return try await createUploadMediaWithRequestBuilder(token: token, requestBody: requestBody).execute().body
+    open class func createUploadMedia(token: String, createUploadMediaRequest: CreateUploadMediaRequest) async throws -> CreateUploadMedia200Response {
+        return try await createUploadMediaWithRequestBuilder(token: token, createUploadMediaRequest: createUploadMediaRequest).execute().body
     }
 
     /**
      Upload media
      - POST /uploadMedia
+     - Upload a file to WhatsApp media storage and get a numeric `mediaId` for later use with `send_file` / `send_sticker` (`mediaId` field, not `body`).  Pass the file as `body` **or** `url` — an HTTP(S) URL or a base64 data URI. The `mediaId` in the response is a numeric string (keep it as a string). 
      - API Key:
        - type: apiKey token (QUERY)
        - name: tokenAuth
      - parameter token: (query) JWT token or API key for authorization 
-     - parameter requestBody: (body)  (optional)
-     - returns: RequestBuilder<Void> 
+     - parameter createUploadMediaRequest: (body)  
+     - returns: RequestBuilder<CreateUploadMedia200Response> 
      */
-    open class func createUploadMediaWithRequestBuilder(token: String, requestBody: [String: AnyCodable]? = nil) -> RequestBuilder<Void> {
+    open class func createUploadMediaWithRequestBuilder(token: String, createUploadMediaRequest: CreateUploadMediaRequest) -> RequestBuilder<CreateUploadMedia200Response> {
         let localVariablePath = "/uploadMedia"
         let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: requestBody)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createUploadMediaRequest)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
@@ -104,7 +105,7 @@ open class MessagingAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OneMsgSdkAPI.requestBuilderFactory.getNonDecodableBuilder()
+        let localVariableRequestBuilder: RequestBuilder<CreateUploadMedia200Response>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -247,23 +248,40 @@ open class MessagingAPI {
      Get messages list
      
      - parameter token: (query) JWT token or API key for authorization 
+     - parameter chatId: (query) Filter messages for one chat (&#x60;phone@c.us&#x60;, group &#x60;@g.us&#x60;, or BSUID &#x60;@lid&#x60;) (optional)
+     - parameter limit: (query) Max rows to return (default 100) (optional)
+     - parameter last: (query) If true, return the latest messages (DESC). Default false. (optional)
+     - parameter lastMessageNumber: (query)  (optional)
+     - parameter firstMessageNumber: (query)  (optional)
+     - parameter minTime: (query) Unix timestamp lower bound (optional)
+     - parameter maxTime: (query) Unix timestamp upper bound (optional)
+     - parameter msgId: (query) Filter by stored message id (optional)
      - returns: ListMessages200Response
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    open class func listMessages(token: String) async throws -> ListMessages200Response {
-        return try await listMessagesWithRequestBuilder(token: token).execute().body
+    open class func listMessages(token: String, chatId: String? = nil, limit: Int? = nil, last: Bool? = nil, lastMessageNumber: Int? = nil, firstMessageNumber: Int? = nil, minTime: Int? = nil, maxTime: Int? = nil, msgId: String? = nil) async throws -> ListMessages200Response {
+        return try await listMessagesWithRequestBuilder(token: token, chatId: chatId, limit: limit, last: last, lastMessageNumber: lastMessageNumber, firstMessageNumber: firstMessageNumber, minTime: minTime, maxTime: maxTime, msgId: msgId).execute().body
     }
 
     /**
      Get messages list
      - GET /messages
+     - List stored chat history for this channel (requires history storage). Filter with `chatId`, `limit`, `last`, message numbers, or time bounds. 
      - API Key:
        - type: apiKey token (QUERY)
        - name: tokenAuth
      - parameter token: (query) JWT token or API key for authorization 
+     - parameter chatId: (query) Filter messages for one chat (&#x60;phone@c.us&#x60;, group &#x60;@g.us&#x60;, or BSUID &#x60;@lid&#x60;) (optional)
+     - parameter limit: (query) Max rows to return (default 100) (optional)
+     - parameter last: (query) If true, return the latest messages (DESC). Default false. (optional)
+     - parameter lastMessageNumber: (query)  (optional)
+     - parameter firstMessageNumber: (query)  (optional)
+     - parameter minTime: (query) Unix timestamp lower bound (optional)
+     - parameter maxTime: (query) Unix timestamp upper bound (optional)
+     - parameter msgId: (query) Filter by stored message id (optional)
      - returns: RequestBuilder<ListMessages200Response> 
      */
-    open class func listMessagesWithRequestBuilder(token: String) -> RequestBuilder<ListMessages200Response> {
+    open class func listMessagesWithRequestBuilder(token: String, chatId: String? = nil, limit: Int? = nil, last: Bool? = nil, lastMessageNumber: Int? = nil, firstMessageNumber: Int? = nil, minTime: Int? = nil, maxTime: Int? = nil, msgId: String? = nil) -> RequestBuilder<ListMessages200Response> {
         let localVariablePath = "/messages"
         let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -271,6 +289,14 @@ open class MessagingAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "token": (wrappedValue: token.encodeToJSON(), isExplode: true),
+            "chatId": (wrappedValue: chatId?.encodeToJSON(), isExplode: true),
+            "limit": (wrappedValue: limit?.encodeToJSON(), isExplode: true),
+            "last": (wrappedValue: last?.encodeToJSON(), isExplode: true),
+            "lastMessageNumber": (wrappedValue: lastMessageNumber?.encodeToJSON(), isExplode: true),
+            "firstMessageNumber": (wrappedValue: firstMessageNumber?.encodeToJSON(), isExplode: true),
+            "min_time": (wrappedValue: minTime?.encodeToJSON(), isExplode: true),
+            "max_time": (wrappedValue: maxTime?.encodeToJSON(), isExplode: true),
+            "msgId": (wrappedValue: msgId?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -420,39 +446,42 @@ open class MessagingAPI {
      Send Carousel
      
      - parameter token: (query) JWT token or API key for authorization 
-     - parameter params: (form) Required. Template-like structure (same as sendTemplate params). Must include a CAROUSEL component and its cards.  Structure: - params[] item with type CAROUSEL and cards (2..10) - cards[] item:   - components[] items:     - header: parameters[0] with type image/video/product       - image: {\\\&quot;image\\\&quot;: {\\\&quot;link\\\&quot;: \\\&quot;https://...\\\&quot;}}       - video: {\\\&quot;video\\\&quot;: {\\\&quot;link\\\&quot;: \\\&quot;https://...\\\&quot;}}       - product: {\\\&quot;product\\\&quot;: {\\\&quot;catalog_id\\\&quot;: \\\&quot;...\\\&quot;, \\\&quot;product_retailer_id\\\&quot;: \\\&quot;...\\\&quot;}}     - button: sub_type url or quick_reply       - url: parameters {\\\&quot;text\\\&quot;: \\\&quot;Button\\\&quot;, \\\&quot;url\\\&quot;: \\\&quot;https://...\\\&quot;}       - quick_reply: parameters[] of {\\\&quot;id\\\&quot;: \\\&quot;...\\\&quot;, \\\&quot;text\\\&quot;: \\\&quot;...\\\&quot;}  
      - parameter body: (form) Text shown above the carousel. Optional. If omitted and params include a body component, the body will be taken from params. (optional)
+     - parameter cards: (form) Preferred. 2–10 carousel cards (header + body + CTA or quick replies). (optional)
+     - parameter params: (form) Required. Template-like structure (same as sendTemplate params). Must include a CAROUSEL component and its cards.  Structure: - params[] item with type CAROUSEL and cards (2..10) - cards[] item:   - components[] items:     - header: parameters[0] with type image/video/product       - image: {\\\&quot;image\\\&quot;: {\\\&quot;link\\\&quot;: \\\&quot;https://...\\\&quot;}}       - video: {\\\&quot;video\\\&quot;: {\\\&quot;link\\\&quot;: \\\&quot;https://...\\\&quot;}}       - product: {\\\&quot;product\\\&quot;: {\\\&quot;catalog_id\\\&quot;: \\\&quot;...\\\&quot;, \\\&quot;product_retailer_id\\\&quot;: \\\&quot;...\\\&quot;}}     - button: sub_type url or quick_reply       - url: parameters {\\\&quot;text\\\&quot;: \\\&quot;Button\\\&quot;, \\\&quot;url\\\&quot;: \\\&quot;https://...\\\&quot;}       - quick_reply: parameters[] of {\\\&quot;id\\\&quot;: \\\&quot;...\\\&quot;, \\\&quot;text\\\&quot;: \\\&quot;...\\\&quot;}  (optional)
      - parameter quotedMsgId: (form) Quoted message ID (Cloud API) (optional)
      - parameter chatId: (form) Required if phone is not set. Chat ID from the message list. Examples: 12020721369@c.us or 120363046942338209@g.us(group) (optional)
      - parameter phone: (form) Required if chatId is not set. A phone number starting with the country code. USA example: 12020721369. (optional)
      - returns: MessageSentResponse
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    open class func sendCarousel(token: String, params: [AnyCodable], body: String? = nil, quotedMsgId: String? = nil, chatId: String? = nil, phone: Int? = nil) async throws -> MessageSentResponse {
-        return try await sendCarouselWithRequestBuilder(token: token, params: params, body: body, quotedMsgId: quotedMsgId, chatId: chatId, phone: phone).execute().body
+    open class func sendCarousel(token: String, body: String? = nil, cards: [[String: AnyCodable]]? = nil, params: [AnyCodable]? = nil, quotedMsgId: String? = nil, chatId: String? = nil, phone: Int? = nil) async throws -> MessageSentResponse {
+        return try await sendCarouselWithRequestBuilder(token: token, body: body, cards: cards, params: params, quotedMsgId: quotedMsgId, chatId: chatId, phone: phone).execute().body
     }
 
     /**
      Send Carousel
      - POST /sendCarousel
-     - You can send product cards via Carousel in two ways:  Template messages: do not require a 24-hour customer service window between you and the recipient. Use sendTemplate.  Free-form messages: can be sent only when a customer service window is open between you and the recipient. Use sendCarousel.  The message structure in /sendCarousel is largely similar to sending a template. However, in this case you must  explicitly specify all elements that are created in advance when working with templates. This is because the message  is sent without using a template.  In /sendCarousel, for sending a Catalog Carousel there can be either 1 URL button or one or more quick reply buttons. 
+     - You can send product cards via Carousel in two ways:  Template messages: do not require a 24-hour customer service window between you and the recipient. Use sendTemplate.  Free-form messages: can be sent only when a customer service window is open between you and the recipient. Use sendCarousel.  The message structure in /sendCarousel is largely similar to sending a template. However, in this case you must  explicitly specify all elements that are created in advance when working with templates. This is because the message  is sent without using a template.  In /sendCarousel, for a Catalog Carousel there can be either 1 URL button or one or more quick reply buttons.  Prefer the simple `cards` array (2–10 cards). Each card needs a header media/product plus a CTA URL or quick-reply buttons. Example:  ```json {   \"phone\": \"79001234567\",   \"body\": \"Pick a product\",   \"cards\": [     {       \"header\": { \"type\": \"image\", \"image\": { \"link\": \"https://example.com/1.jpg\" } },       \"body\": { \"text\": \"Card one\" },       \"type\": \"cta_url\",       \"action\": { \"name\": \"cta_url\", \"parameters\": { \"url\": \"https://example.com/p1\", \"display_text\": \"Open\" } }     },     {       \"header\": { \"type\": \"image\", \"image\": { \"link\": \"https://example.com/2.jpg\" } },       \"body\": { \"text\": \"Card two\" },       \"type\": \"cta_url\",       \"action\": { \"name\": \"cta_url\", \"parameters\": { \"url\": \"https://example.com/p2\", \"display_text\": \"Open\" } }     }   ] } ```  `params` with a `CAROUSEL` component is the template-like alternative. 
      - API Key:
        - type: apiKey token (QUERY)
        - name: tokenAuth
      - parameter token: (query) JWT token or API key for authorization 
-     - parameter params: (form) Required. Template-like structure (same as sendTemplate params). Must include a CAROUSEL component and its cards.  Structure: - params[] item with type CAROUSEL and cards (2..10) - cards[] item:   - components[] items:     - header: parameters[0] with type image/video/product       - image: {\\\&quot;image\\\&quot;: {\\\&quot;link\\\&quot;: \\\&quot;https://...\\\&quot;}}       - video: {\\\&quot;video\\\&quot;: {\\\&quot;link\\\&quot;: \\\&quot;https://...\\\&quot;}}       - product: {\\\&quot;product\\\&quot;: {\\\&quot;catalog_id\\\&quot;: \\\&quot;...\\\&quot;, \\\&quot;product_retailer_id\\\&quot;: \\\&quot;...\\\&quot;}}     - button: sub_type url or quick_reply       - url: parameters {\\\&quot;text\\\&quot;: \\\&quot;Button\\\&quot;, \\\&quot;url\\\&quot;: \\\&quot;https://...\\\&quot;}       - quick_reply: parameters[] of {\\\&quot;id\\\&quot;: \\\&quot;...\\\&quot;, \\\&quot;text\\\&quot;: \\\&quot;...\\\&quot;}  
      - parameter body: (form) Text shown above the carousel. Optional. If omitted and params include a body component, the body will be taken from params. (optional)
+     - parameter cards: (form) Preferred. 2–10 carousel cards (header + body + CTA or quick replies). (optional)
+     - parameter params: (form) Required. Template-like structure (same as sendTemplate params). Must include a CAROUSEL component and its cards.  Structure: - params[] item with type CAROUSEL and cards (2..10) - cards[] item:   - components[] items:     - header: parameters[0] with type image/video/product       - image: {\\\&quot;image\\\&quot;: {\\\&quot;link\\\&quot;: \\\&quot;https://...\\\&quot;}}       - video: {\\\&quot;video\\\&quot;: {\\\&quot;link\\\&quot;: \\\&quot;https://...\\\&quot;}}       - product: {\\\&quot;product\\\&quot;: {\\\&quot;catalog_id\\\&quot;: \\\&quot;...\\\&quot;, \\\&quot;product_retailer_id\\\&quot;: \\\&quot;...\\\&quot;}}     - button: sub_type url or quick_reply       - url: parameters {\\\&quot;text\\\&quot;: \\\&quot;Button\\\&quot;, \\\&quot;url\\\&quot;: \\\&quot;https://...\\\&quot;}       - quick_reply: parameters[] of {\\\&quot;id\\\&quot;: \\\&quot;...\\\&quot;, \\\&quot;text\\\&quot;: \\\&quot;...\\\&quot;}  (optional)
      - parameter quotedMsgId: (form) Quoted message ID (Cloud API) (optional)
      - parameter chatId: (form) Required if phone is not set. Chat ID from the message list. Examples: 12020721369@c.us or 120363046942338209@g.us(group) (optional)
      - parameter phone: (form) Required if chatId is not set. A phone number starting with the country code. USA example: 12020721369. (optional)
      - returns: RequestBuilder<MessageSentResponse> 
      */
-    open class func sendCarouselWithRequestBuilder(token: String, params: [AnyCodable], body: String? = nil, quotedMsgId: String? = nil, chatId: String? = nil, phone: Int? = nil) -> RequestBuilder<MessageSentResponse> {
+    open class func sendCarouselWithRequestBuilder(token: String, body: String? = nil, cards: [[String: AnyCodable]]? = nil, params: [AnyCodable]? = nil, quotedMsgId: String? = nil, chatId: String? = nil, phone: Int? = nil) -> RequestBuilder<MessageSentResponse> {
         let localVariablePath = "/sendCarousel"
         let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableFormParams: [String: Any?] = [
             "body": body?.encodeToJSON(),
-            "params": params.encodeToJSON(),
+            "cards": cards?.encodeToJSON(),
+            "params": params?.encodeToJSON(),
             "quotedMsgId": quotedMsgId?.encodeToJSON(),
             "chatId": chatId?.encodeToJSON(),
             "phone": phone?.encodeToJSON(),
@@ -492,6 +521,7 @@ open class MessagingAPI {
     /**
      Send a Contact
      - POST /sendContact
+     - Send a WhatsApp contact card.  Preferred simple body (legacy-compatible):  ```json {   \"phone\": \"79001234567\",   \"contact\": { \"name\": \"Lida\", \"phone\": \"+79181976551\" } } ```  Cloud API shape also works: `contacts` is an array of objects with `name.formatted_name` and `phones[].phone` (E.164 string, **not** a timestamp). 
      - API Key:
        - type: apiKey token (QUERY)
        - name: tokenAuth
@@ -913,7 +943,7 @@ open class MessagingAPI {
      - parameter token: (query) JWT token or API key for authorization 
      - parameter body: (form) Message text, UTF-8 or UTF-16 string with emoji 
      - parameter quotedMsgId: (form) Message ID to quote/reply to (Cloud API wamid) (optional)
-     - parameter chatId: (form) Chat ID in format: phone@c.us (individual) or phone@g.us (group) (optional)
+     - parameter chatId: (form) Recipient chat ID: phone@c.us, group@g.us, or BSUID@lid (optional)
      - parameter phone: (form) Phone number starting with country code (alternative to chatId) (optional)
      - returns: MessageSentResponse
      */
@@ -932,7 +962,7 @@ open class MessagingAPI {
      - parameter token: (query) JWT token or API key for authorization 
      - parameter body: (form) Message text, UTF-8 or UTF-16 string with emoji 
      - parameter quotedMsgId: (form) Message ID to quote/reply to (Cloud API wamid) (optional)
-     - parameter chatId: (form) Chat ID in format: phone@c.us (individual) or phone@g.us (group) (optional)
+     - parameter chatId: (form) Recipient chat ID: phone@c.us, group@g.us, or BSUID@lid (optional)
      - parameter phone: (form) Phone number starting with country code (alternative to chatId) (optional)
      - returns: RequestBuilder<MessageSentResponse> 
      */
@@ -1057,28 +1087,29 @@ open class MessagingAPI {
      Send a Product
      
      - parameter token: (query) JWT token or API key for authorization 
-     - parameter requestBody: (body)  (optional)
+     - parameter sendProductRequest: (body)  
      - returns: MessageSentResponse
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    open class func sendProduct(token: String, requestBody: [String: AnyCodable]? = nil) async throws -> MessageSentResponse {
-        return try await sendProductWithRequestBuilder(token: token, requestBody: requestBody).execute().body
+    open class func sendProduct(token: String, sendProductRequest: SendProductRequest) async throws -> MessageSentResponse {
+        return try await sendProductWithRequestBuilder(token: token, sendProductRequest: sendProductRequest).execute().body
     }
 
     /**
      Send a Product
      - POST /sendProduct
+     - Send a single catalog product or a product list. Destination is `chatId` or `phone`. `action` is required: - single product: `{ \"catalog_id\": \"...\", \"product_retailer_id\": \"...\" }` - product list: `{ \"catalog_id\": \"...\", \"sections\": [{ \"title\": \"...\", \"product_items\": [{ \"product_retailer_id\": \"...\" }] }] }` 
      - API Key:
        - type: apiKey token (QUERY)
        - name: tokenAuth
      - parameter token: (query) JWT token or API key for authorization 
-     - parameter requestBody: (body)  (optional)
+     - parameter sendProductRequest: (body)  
      - returns: RequestBuilder<MessageSentResponse> 
      */
-    open class func sendProductWithRequestBuilder(token: String, requestBody: [String: AnyCodable]? = nil) -> RequestBuilder<MessageSentResponse> {
+    open class func sendProductWithRequestBuilder(token: String, sendProductRequest: SendProductRequest) -> RequestBuilder<MessageSentResponse> {
         let localVariablePath = "/sendProduct"
         let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: requestBody)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: sendProductRequest)
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([

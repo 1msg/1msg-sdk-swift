@@ -12,16 +12,24 @@ import AnyCodable
 
 public struct SendLocationRequestRequest: Codable, JSONEncodable, Hashable {
 
+    /** Recipient phone with country code. Use phone or chatId. */
     public var phone: String?
+    /** Recipient chat ID (`phone@c.us`, group `@g.us`, or BSUID `@lid`). Use phone or chatId. */
+    public var chatId: String?
+    public var quotedMsgId: String?
     public var body: String?
 
-    public init(phone: String? = nil, body: String? = nil) {
+    public init(phone: String? = nil, chatId: String? = nil, quotedMsgId: String? = nil, body: String? = nil) {
         self.phone = phone
+        self.chatId = chatId
+        self.quotedMsgId = quotedMsgId
         self.body = body
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case phone
+        case chatId
+        case quotedMsgId
         case body
     }
 
@@ -30,6 +38,8 @@ public struct SendLocationRequestRequest: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(phone, forKey: .phone)
+        try container.encodeIfPresent(chatId, forKey: .chatId)
+        try container.encodeIfPresent(quotedMsgId, forKey: .quotedMsgId)
         try container.encodeIfPresent(body, forKey: .body)
     }
 }

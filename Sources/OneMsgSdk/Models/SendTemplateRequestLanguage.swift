@@ -10,12 +10,14 @@ import Foundation
 import AnyCodable
 #endif
 
+/** Template language. Always set &#x60;policy&#x60; to &#x60;deterministic&#x60;. */
 public struct SendTemplateRequestLanguage: Codable, JSONEncodable, Hashable {
 
-    public var policy: String?
+    /** Must be `deterministic` */
+    public var policy: String? = "deterministic"
     public var code: String?
 
-    public init(policy: String? = nil, code: String? = nil) {
+    public init(policy: String? = "deterministic", code: String? = nil) {
         self.policy = policy
         self.code = code
     }

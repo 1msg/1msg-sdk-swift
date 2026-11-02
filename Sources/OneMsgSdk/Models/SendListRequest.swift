@@ -12,14 +12,20 @@ import AnyCodable
 
 public struct SendListRequest: Codable, JSONEncodable, Hashable {
 
+    /** Recipient phone with country code. Use phone or chatId. */
     public var phone: String?
+    /** Recipient chat ID (`phone@c.us`, group `@g.us`, or BSUID `@lid`). Use phone or chatId. */
+    public var chatId: String?
+    public var quotedMsgId: String?
     public var body: String?
     public var buttonText: String?
     public var action: String?
     public var sections: [SendListRequestSectionsInner]?
 
-    public init(phone: String? = nil, body: String? = nil, buttonText: String? = nil, action: String? = nil, sections: [SendListRequestSectionsInner]? = nil) {
+    public init(phone: String? = nil, chatId: String? = nil, quotedMsgId: String? = nil, body: String? = nil, buttonText: String? = nil, action: String? = nil, sections: [SendListRequestSectionsInner]? = nil) {
         self.phone = phone
+        self.chatId = chatId
+        self.quotedMsgId = quotedMsgId
         self.body = body
         self.buttonText = buttonText
         self.action = action
@@ -28,6 +34,8 @@ public struct SendListRequest: Codable, JSONEncodable, Hashable {
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case phone
+        case chatId
+        case quotedMsgId
         case body
         case buttonText
         case action
@@ -39,6 +47,8 @@ public struct SendListRequest: Codable, JSONEncodable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(phone, forKey: .phone)
+        try container.encodeIfPresent(chatId, forKey: .chatId)
+        try container.encodeIfPresent(quotedMsgId, forKey: .quotedMsgId)
         try container.encodeIfPresent(body, forKey: .body)
         try container.encodeIfPresent(buttonText, forKey: .buttonText)
         try container.encodeIfPresent(action, forKey: .action)
