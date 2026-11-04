@@ -13,6 +13,11 @@ import AnyCodable
 /** Request body for sending a text message */
 public struct SendMessageRequest: Codable, JSONEncodable, Hashable {
 
+    public enum Category: String, Codable, CaseIterable {
+        case utility = "utility"
+        case authentication = "authentication"
+        case service = "service"
+    }
     public static let bodyRule = StringRule(minLength: 1, maxLength: 4096, pattern: nil)
     public static let quotedMsgIdRule = StringRule(minLength: nil, maxLength: nil, pattern: "/^wamid\\..+$/")
     public static let phoneRule = NumericRule<Int>(minimum: 1000000000, exclusiveMinimum: false, maximum: 999999999999999, exclusiveMaximum: false, multipleOf: nil)
@@ -24,12 +29,17 @@ public struct SendMessageRequest: Codable, JSONEncodable, Hashable {
     public var chatId: String?
     /** Phone number starting with country code (alternative to chatId) */
     public var phone: Int?
+    /** Optional Direct Send category. Direct Send is in beta: Meta has not enabled it on every business portfolio. `utility` or `authentication` enables it. `authentication` is part of that beta and is not recommended. Omit or `service` keeps a normal service message (and the marketing auto-template outside the 24-hour window). `marketing` is rejected.  */
+    public var category: Category?
+    public var directSend: SendMessageRequestDirectSend?
 
-    public init(body: String, quotedMsgId: String? = nil, chatId: String? = nil, phone: Int? = nil) {
+    public init(body: String, quotedMsgId: String? = nil, chatId: String? = nil, phone: Int? = nil, category: Category? = nil, directSend: SendMessageRequestDirectSend? = nil) {
         self.body = body
         self.quotedMsgId = quotedMsgId
         self.chatId = chatId
         self.phone = phone
+        self.category = category
+        self.directSend = directSend
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -37,6 +47,8 @@ public struct SendMessageRequest: Codable, JSONEncodable, Hashable {
         case quotedMsgId
         case chatId
         case phone
+        case category
+        case directSend
     }
 
     // Encodable protocol methods
@@ -47,6 +59,8 @@ public struct SendMessageRequest: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(quotedMsgId, forKey: .quotedMsgId)
         try container.encodeIfPresent(chatId, forKey: .chatId)
         try container.encodeIfPresent(phone, forKey: .phone)
+        try container.encodeIfPresent(category, forKey: .category)
+        try container.encodeIfPresent(directSend, forKey: .directSend)
     }
 }
 

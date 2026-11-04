@@ -15,6 +15,7 @@ Method | HTTP request | Description
 [**sendButton**](MessagingAPI.md#sendbutton) | **POST** /sendButton | Send Reply Buttons Message
 [**sendCarousel**](MessagingAPI.md#sendcarousel) | **POST** /sendCarousel | Send Carousel
 [**sendContact**](MessagingAPI.md#sendcontact) | **POST** /sendContact | Send a Contact
+[**sendContactInfo**](MessagingAPI.md#sendcontactinfo) | **POST** /sendContactInfo | Request the user&#39;s phone number
 [**sendCtaUrl**](MessagingAPI.md#sendctaurl) | **POST** /sendCtaUrl | Send CTA URL interactive message
 [**sendFile**](MessagingAPI.md#sendfile) | **POST** /sendFile | Send a File
 [**sendFlow**](MessagingAPI.md#sendflow) | **POST** /sendFlow | Send WhatsApp Flow Message
@@ -85,10 +86,12 @@ Name | Type | Description  | Notes
 
 # **createUploadMedia**
 ```swift
-    open class func createUploadMedia(token: String, requestBody: [String: AnyCodable]? = nil, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func createUploadMedia(token: String, createUploadMediaRequest: CreateUploadMediaRequest, completion: @escaping (_ data: CreateUploadMedia200Response?, _ error: Error?) -> Void)
 ```
 
 Upload media
+
+Upload a file to WhatsApp media storage and get a numeric `mediaId` for later use with `send_file` / `send_sticker` (`mediaId` field, not `body`).  Pass the file as `body` **or** `url` — an HTTP(S) URL or a base64 data URI. The `mediaId` in the response is a numeric string (keep it as a string). 
 
 ### Example
 ```swift
@@ -96,10 +99,10 @@ Upload media
 import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
-let requestBody = "TODO" // [String: AnyCodable] |  (optional)
+let createUploadMediaRequest = createUploadMedia_request(body: "body_example", url: "url_example") // CreateUploadMediaRequest | 
 
 // Upload media
-MessagingAPI.createUploadMedia(token: token, requestBody: requestBody) { (response, error) in
+MessagingAPI.createUploadMedia(token: token, createUploadMediaRequest: createUploadMediaRequest) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -116,11 +119,11 @@ MessagingAPI.createUploadMedia(token: token, requestBody: requestBody) { (respon
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **token** | **String** | JWT token or API key for authorization | 
- **requestBody** | [**[String: AnyCodable]**](AnyCodable.md) |  | [optional] 
+ **createUploadMediaRequest** | [**CreateUploadMediaRequest**](CreateUploadMediaRequest.md) |  | 
 
 ### Return type
 
-Void (empty response body)
+[**CreateUploadMedia200Response**](CreateUploadMedia200Response.md)
 
 ### Authorization
 
@@ -129,7 +132,7 @@ Void (empty response body)
 ### HTTP request headers
 
  - **Content-Type**: application/json
- - **Accept**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -287,10 +290,12 @@ Name | Type | Description  | Notes
 
 # **listMessages**
 ```swift
-    open class func listMessages(token: String, completion: @escaping (_ data: ListMessages200Response?, _ error: Error?) -> Void)
+    open class func listMessages(token: String, chatId: String? = nil, limit: Int? = nil, last: Bool? = nil, lastMessageNumber: Int? = nil, firstMessageNumber: Int? = nil, minTime: Int? = nil, maxTime: Int? = nil, msgId: String? = nil, completion: @escaping (_ data: ListMessages200Response?, _ error: Error?) -> Void)
 ```
 
 Get messages list
+
+List stored chat history for this channel (requires history storage). Filter with `chatId`, `limit`, `last`, message numbers, or time bounds. 
 
 ### Example
 ```swift
@@ -298,9 +303,17 @@ Get messages list
 import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
+let chatId = "chatId_example" // String | Filter messages for one chat (`phone@c.us`, group `@g.us`, or BSUID `@lid`) (optional)
+let limit = 987 // Int | Max rows to return (default 100) (optional)
+let last = true // Bool | If true, return the latest messages (DESC). Default false. (optional)
+let lastMessageNumber = 987 // Int |  (optional)
+let firstMessageNumber = 987 // Int |  (optional)
+let minTime = 987 // Int | Unix timestamp lower bound (optional)
+let maxTime = 987 // Int | Unix timestamp upper bound (optional)
+let msgId = "msgId_example" // String | Filter by stored message id (optional)
 
 // Get messages list
-MessagingAPI.listMessages(token: token) { (response, error) in
+MessagingAPI.listMessages(token: token, chatId: chatId, limit: limit, last: last, lastMessageNumber: lastMessageNumber, firstMessageNumber: firstMessageNumber, minTime: minTime, maxTime: maxTime, msgId: msgId) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -317,6 +330,14 @@ MessagingAPI.listMessages(token: token) { (response, error) in
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **token** | **String** | JWT token or API key for authorization | 
+ **chatId** | **String** | Filter messages for one chat (&#x60;phone@c.us&#x60;, group &#x60;@g.us&#x60;, or BSUID &#x60;@lid&#x60;) | [optional] 
+ **limit** | **Int** | Max rows to return (default 100) | [optional] 
+ **last** | **Bool** | If true, return the latest messages (DESC). Default false. | [optional] 
+ **lastMessageNumber** | **Int** |  | [optional] 
+ **firstMessageNumber** | **Int** |  | [optional] 
+ **minTime** | **Int** | Unix timestamp lower bound | [optional] 
+ **maxTime** | **Int** | Unix timestamp upper bound | [optional] 
+ **msgId** | **String** | Filter by stored message id | [optional] 
 
 ### Return type
 
@@ -450,7 +471,7 @@ Send Reply Buttons Message
 import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
-let sendButtonRequest = sendButton_request(phone: "phone_example", body: "body_example", footer: "footer_example", sections: [sendButton_request_sections_inner(type: "type_example", reply: sendButton_request_sections_inner_reply(id: "id_example", title: "title_example"))]) // SendButtonRequest |  (optional)
+let sendButtonRequest = sendButton_request(phone: "phone_example", chatId: "chatId_example", quotedMsgId: "quotedMsgId_example", body: "body_example", footer: "footer_example", header: "TODO", buttons: [123], sections: [sendButton_request_sections_inner(type: "type_example", reply: sendButton_request_sections_inner_reply(id: "id_example", title: "title_example"))]) // SendButtonRequest |  (optional)
 
 // Send Reply Buttons Message
 MessagingAPI.sendButton(token: token, sendButtonRequest: sendButtonRequest) { (response, error) in
@@ -489,12 +510,12 @@ Name | Type | Description  | Notes
 
 # **sendCarousel**
 ```swift
-    open class func sendCarousel(token: String, params: [AnyCodable], body: String? = nil, quotedMsgId: String? = nil, chatId: String? = nil, phone: Int? = nil, completion: @escaping (_ data: MessageSentResponse?, _ error: Error?) -> Void)
+    open class func sendCarousel(token: String, body: String? = nil, cards: [[String: AnyCodable]]? = nil, params: [AnyCodable]? = nil, quotedMsgId: String? = nil, chatId: String? = nil, phone: Int? = nil, completion: @escaping (_ data: MessageSentResponse?, _ error: Error?) -> Void)
 ```
 
 Send Carousel
 
-You can send product cards via Carousel in two ways:  Template messages: do not require a 24-hour customer service window between you and the recipient. Use sendTemplate.  Free-form messages: can be sent only when a customer service window is open between you and the recipient. Use sendCarousel.  The message structure in /sendCarousel is largely similar to sending a template. However, in this case you must  explicitly specify all elements that are created in advance when working with templates. This is because the message  is sent without using a template.  In /sendCarousel, for sending a Catalog Carousel there can be either 1 URL button or one or more quick reply buttons. 
+You can send product cards via Carousel in two ways:  Template messages: do not require a 24-hour customer service window between you and the recipient. Use sendTemplate.  Free-form messages: can be sent only when a customer service window is open between you and the recipient. Use sendCarousel.  The message structure in /sendCarousel is largely similar to sending a template. However, in this case you must  explicitly specify all elements that are created in advance when working with templates. This is because the message  is sent without using a template.  In /sendCarousel, for a Catalog Carousel there can be either 1 URL button or one or more quick reply buttons.  Prefer the simple `cards` array (2–10 cards). Each card needs a header media/product plus a CTA URL or quick-reply buttons. Example:  ```json {   \"phone\": \"79001234567\",   \"body\": \"Pick a product\",   \"cards\": [     {       \"header\": { \"type\": \"image\", \"image\": { \"link\": \"https://example.com/1.jpg\" } },       \"body\": { \"text\": \"Card one\" },       \"type\": \"cta_url\",       \"action\": { \"name\": \"cta_url\", \"parameters\": { \"url\": \"https://example.com/p1\", \"display_text\": \"Open\" } }     },     {       \"header\": { \"type\": \"image\", \"image\": { \"link\": \"https://example.com/2.jpg\" } },       \"body\": { \"text\": \"Card two\" },       \"type\": \"cta_url\",       \"action\": { \"name\": \"cta_url\", \"parameters\": { \"url\": \"https://example.com/p2\", \"display_text\": \"Open\" } }     }   ] } ```  `params` with a `CAROUSEL` component is the template-like alternative. 
 
 ### Example
 ```swift
@@ -502,14 +523,15 @@ You can send product cards via Carousel in two ways:  Template messages: do not 
 import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
-let params = [123] // [AnyCodable] | Required. Template-like structure (same as sendTemplate params). Must include a CAROUSEL component and its cards.  Structure: - params[] item with type CAROUSEL and cards (2..10) - cards[] item:   - components[] items:     - header: parameters[0] with type image/video/product       - image: {\\\"image\\\": {\\\"link\\\": \\\"https://...\\\"}}       - video: {\\\"video\\\": {\\\"link\\\": \\\"https://...\\\"}}       - product: {\\\"product\\\": {\\\"catalog_id\\\": \\\"...\\\", \\\"product_retailer_id\\\": \\\"...\\\"}}     - button: sub_type url or quick_reply       - url: parameters {\\\"text\\\": \\\"Button\\\", \\\"url\\\": \\\"https://...\\\"}       - quick_reply: parameters[] of {\\\"id\\\": \\\"...\\\", \\\"text\\\": \\\"...\\\"} 
 let body = "body_example" // String | Text shown above the carousel. Optional. If omitted and params include a body component, the body will be taken from params. (optional)
+let cards = ["TODO"] // [[String: AnyCodable]] | Preferred. 2–10 carousel cards (header + body + CTA or quick replies). (optional)
+let params = [123] // [AnyCodable] | Required. Template-like structure (same as sendTemplate params). Must include a CAROUSEL component and its cards.  Structure: - params[] item with type CAROUSEL and cards (2..10) - cards[] item:   - components[] items:     - header: parameters[0] with type image/video/product       - image: {\\\"image\\\": {\\\"link\\\": \\\"https://...\\\"}}       - video: {\\\"video\\\": {\\\"link\\\": \\\"https://...\\\"}}       - product: {\\\"product\\\": {\\\"catalog_id\\\": \\\"...\\\", \\\"product_retailer_id\\\": \\\"...\\\"}}     - button: sub_type url or quick_reply       - url: parameters {\\\"text\\\": \\\"Button\\\", \\\"url\\\": \\\"https://...\\\"}       - quick_reply: parameters[] of {\\\"id\\\": \\\"...\\\", \\\"text\\\": \\\"...\\\"}  (optional)
 let quotedMsgId = "quotedMsgId_example" // String | Quoted message ID (Cloud API) (optional)
 let chatId = "chatId_example" // String | Required if phone is not set. Chat ID from the message list. Examples: 12020721369@c.us or 120363046942338209@g.us(group) (optional)
 let phone = 987 // Int | Required if chatId is not set. A phone number starting with the country code. USA example: 12020721369. (optional)
 
 // Send Carousel
-MessagingAPI.sendCarousel(token: token, params: params, body: body, quotedMsgId: quotedMsgId, chatId: chatId, phone: phone) { (response, error) in
+MessagingAPI.sendCarousel(token: token, body: body, cards: cards, params: params, quotedMsgId: quotedMsgId, chatId: chatId, phone: phone) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -526,8 +548,9 @@ MessagingAPI.sendCarousel(token: token, params: params, body: body, quotedMsgId:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **token** | **String** | JWT token or API key for authorization | 
- **params** | [**[AnyCodable]**](AnyCodable.md) | Required. Template-like structure (same as sendTemplate params). Must include a CAROUSEL component and its cards.  Structure: - params[] item with type CAROUSEL and cards (2..10) - cards[] item:   - components[] items:     - header: parameters[0] with type image/video/product       - image: {\\\&quot;image\\\&quot;: {\\\&quot;link\\\&quot;: \\\&quot;https://...\\\&quot;}}       - video: {\\\&quot;video\\\&quot;: {\\\&quot;link\\\&quot;: \\\&quot;https://...\\\&quot;}}       - product: {\\\&quot;product\\\&quot;: {\\\&quot;catalog_id\\\&quot;: \\\&quot;...\\\&quot;, \\\&quot;product_retailer_id\\\&quot;: \\\&quot;...\\\&quot;}}     - button: sub_type url or quick_reply       - url: parameters {\\\&quot;text\\\&quot;: \\\&quot;Button\\\&quot;, \\\&quot;url\\\&quot;: \\\&quot;https://...\\\&quot;}       - quick_reply: parameters[] of {\\\&quot;id\\\&quot;: \\\&quot;...\\\&quot;, \\\&quot;text\\\&quot;: \\\&quot;...\\\&quot;}  | 
  **body** | **String** | Text shown above the carousel. Optional. If omitted and params include a body component, the body will be taken from params. | [optional] 
+ **cards** | [**[[String: AnyCodable]]**]([String: AnyCodable].md) | Preferred. 2–10 carousel cards (header + body + CTA or quick replies). | [optional] 
+ **params** | [**[AnyCodable]**](AnyCodable.md) | Required. Template-like structure (same as sendTemplate params). Must include a CAROUSEL component and its cards.  Structure: - params[] item with type CAROUSEL and cards (2..10) - cards[] item:   - components[] items:     - header: parameters[0] with type image/video/product       - image: {\\\&quot;image\\\&quot;: {\\\&quot;link\\\&quot;: \\\&quot;https://...\\\&quot;}}       - video: {\\\&quot;video\\\&quot;: {\\\&quot;link\\\&quot;: \\\&quot;https://...\\\&quot;}}       - product: {\\\&quot;product\\\&quot;: {\\\&quot;catalog_id\\\&quot;: \\\&quot;...\\\&quot;, \\\&quot;product_retailer_id\\\&quot;: \\\&quot;...\\\&quot;}}     - button: sub_type url or quick_reply       - url: parameters {\\\&quot;text\\\&quot;: \\\&quot;Button\\\&quot;, \\\&quot;url\\\&quot;: \\\&quot;https://...\\\&quot;}       - quick_reply: parameters[] of {\\\&quot;id\\\&quot;: \\\&quot;...\\\&quot;, \\\&quot;text\\\&quot;: \\\&quot;...\\\&quot;}  | [optional] 
  **quotedMsgId** | **String** | Quoted message ID (Cloud API) | [optional] 
  **chatId** | **String** | Required if phone is not set. Chat ID from the message list. Examples: 12020721369@c.us or 120363046942338209@g.us(group) | [optional] 
  **phone** | **Int** | Required if chatId is not set. A phone number starting with the country code. USA example: 12020721369. | [optional] 
@@ -554,13 +577,15 @@ Name | Type | Description  | Notes
 
 Send a Contact
 
+Send a WhatsApp contact card.  Preferred simple body (legacy-compatible):  ```json {   \"phone\": \"79001234567\",   \"contact\": { \"name\": \"Lida\", \"phone\": \"+79181976551\" } } ```  Cloud API shape also works: `contacts` is an array of objects with `name.formatted_name` and `phones[].phone` (E.164 string, **not** a timestamp). 
+
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
-let sendContactRequest = sendContact_request(phone: "phone_example", contacts: [sendContact_request_contacts_inner(name: sendContact_request_contacts_inner_name(formattedName: "formattedName_example", firstName: "firstName_example", lastName: "lastName_example", middleName: "middleName_example", suffix: "suffix_example", _prefix: "_prefix_example"), birthday: "birthday_example", addresses: [123], emails: [123], org: sendContact_request_contacts_inner_org(company: "company_example", department: "department_example", title: "title_example"), phones: [sendContact_request_contacts_inner_phones_inner(phone: "phone_example", type: "type_example", waId: "waId_example")], urls: [123])]) // SendContactRequest |  (optional)
+let sendContactRequest = sendContact_request(phone: "phone_example", chatId: "chatId_example", quotedMsgId: "quotedMsgId_example", contact: sendContact_request_contact(name: sendContact_request_contact_name(), phone: "phone_example", email: "email_example", org: "TODO", url: "url_example"), contacts: [sendContact_request_contacts_inner(name: sendContact_request_contacts_inner_name(formattedName: "formattedName_example", firstName: "firstName_example", lastName: "lastName_example", middleName: "middleName_example", suffix: "suffix_example", _prefix: "_prefix_example"), birthday: "birthday_example", addresses: ["TODO"], emails: ["TODO"], org: sendContact_request_contacts_inner_org(company: "company_example", department: "department_example", title: "title_example"), phones: [sendContact_request_contacts_inner_phones_inner(phone: "phone_example", type: "type_example", waId: "waId_example")], urls: ["TODO"])]) // SendContactRequest |  (optional)
 
 // Send a Contact
 MessagingAPI.sendContact(token: token, sendContactRequest: sendContactRequest) { (response, error) in
@@ -581,6 +606,58 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **token** | **String** | JWT token or API key for authorization | 
  **sendContactRequest** | [**SendContactRequest**](SendContactRequest.md) |  | [optional] 
+
+### Return type
+
+[**MessageSentResponse**](MessageSentResponse.md)
+
+### Authorization
+
+[tokenAuth](../README.md#tokenAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **sendContactInfo**
+```swift
+    open class func sendContactInfo(token: String, sendContactInfoRequest: SendContactInfoRequest? = nil, completion: @escaping (_ data: MessageSentResponse?, _ error: Error?) -> Void)
+```
+
+Request the user's phone number
+
+Send a service-window interactive message that asks the WhatsApp user to share their phone number (`request_contact_info`).  Use this when you only know the user by BSUID (WhatsApp username) and the 24-hour customer service window is open. Outside that window, create a UTILITY or MARKETING template with a `REQUEST_CONTACT_INFO` button (`POST /addTemplate`) and send it with `POST /sendTemplate`.  `body` is the text shown above the button (1–1024 characters). WhatsApp chooses the button label. This method has no button-text field — do not send one.  ```json {   \"bsuid\": \"US.13491208655302741918\",   \"body\": \"Please share your phone number so we can reach you.\" } ```  `phone`, `chatId` (`…@c.us`, `…@lid`, `…@username`), or `bsuid` identifies the recipient. One of them is enough.  After Meta accepts the send, the outgoing webhook and stored history message use this same text as `messages[].body` (`type: interactive`).  When the user taps the button, Meta sends an inbound `contacts` message. The sender stays the BSUID. The shared number is on the card with `origin: contact_request`. We write that phone onto the existing BSUID contact automatically — there is no separate “link phone” call.  ```json {   \"contacts\": [     {       \"profile\": { \"name\": \"Ada\", \"username\": \"ada\" },       \"user_id\": \"US.13491208655302741918\"     }   ],   \"messages\": [     {       \"from_user_id\": \"US.13491208655302741918\",       \"type\": \"contacts\",       \"contacts\": [         {           \"origin\": \"contact_request\",           \"phones\": [{ \"phone\": \"+1 202-555-0123\", \"wa_id\": \"12025550123\" }]         }       ]     }   ] } ```  The stored inbound message body is the digits (`12025550123`).  If Meta later includes a phone on an ordinary message or status for that same BSUID (`wa_id`, `from`, or `recipient_id`, together with `user_id` / `recipient_user_id`), that phone is merged onto the same contact. A contact card the user forwards (`origin` other than `contact_request`) is someone else's number and is not stored as this sender's phone. 
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OneMsgSdk
+
+let token = "token_example" // String | JWT token or API key for authorization
+let sendContactInfoRequest = sendContactInfo_request(phone: "phone_example", chatId: "chatId_example", bsuid: "bsuid_example", quotedMsgId: "quotedMsgId_example", body: "body_example") // SendContactInfoRequest |  (optional)
+
+// Request the user's phone number
+MessagingAPI.sendContactInfo(token: token, sendContactInfoRequest: sendContactInfoRequest) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **token** | **String** | JWT token or API key for authorization | 
+ **sendContactInfoRequest** | [**SendContactInfoRequest**](SendContactInfoRequest.md) |  | [optional] 
 
 ### Return type
 
@@ -810,7 +887,7 @@ Send List Message
 import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
-let sendListRequest = sendList_request(phone: "phone_example", body: "body_example", buttonText: "buttonText_example", action: "action_example", sections: [sendList_request_sections_inner(title: "title_example", rows: [sendList_request_sections_inner_rows_inner(id: "id_example", title: "title_example", description: "description_example")])]) // SendListRequest |  (optional)
+let sendListRequest = sendList_request(phone: "phone_example", chatId: "chatId_example", quotedMsgId: "quotedMsgId_example", body: "body_example", buttonText: "buttonText_example", action: "action_example", sections: [sendList_request_sections_inner(title: "title_example", rows: [sendList_request_sections_inner_rows_inner(id: "id_example", title: "title_example", description: "description_example")])]) // SendListRequest |  (optional)
 
 // Send List Message
 MessagingAPI.sendList(token: token, sendListRequest: sendListRequest) { (response, error) in
@@ -924,7 +1001,7 @@ Send Location Request Message
 import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
-let sendLocationRequestRequest = sendLocationRequest_request(phone: "phone_example", body: "body_example") // SendLocationRequestRequest |  (optional)
+let sendLocationRequestRequest = sendLocationRequest_request(phone: "phone_example", chatId: "chatId_example", quotedMsgId: "quotedMsgId_example", body: "body_example") // SendLocationRequestRequest |  (optional)
 
 // Send Location Request Message
 MessagingAPI.sendLocationRequest(token: token, sendLocationRequestRequest: sendLocationRequestRequest) { (response, error) in
@@ -963,12 +1040,12 @@ Name | Type | Description  | Notes
 
 # **sendMessage**
 ```swift
-    open class func sendMessage(token: String, body: String, quotedMsgId: String? = nil, chatId: String? = nil, phone: Int? = nil, completion: @escaping (_ data: MessageSentResponse?, _ error: Error?) -> Void)
+    open class func sendMessage(token: String, body: String, quotedMsgId: String? = nil, chatId: String? = nil, phone: Int? = nil, category: Category_sendMessage? = nil, directSend: SendMessageRequestDirectSend? = nil, completion: @escaping (_ data: MessageSentResponse?, _ error: Error?) -> Void)
 ```
 
 Send a Message
 
-Send a message to an existing chat. (Only if the dialogue has an Open Session).  The message will be added to the queue for sending and delivered even if the phone  is disconnected from the Internet or authorization is not passed.  Only one of two parameters is needed to determine the destination - chatId or phone. 
+Send a message to an existing chat. (Only if the dialogue has an Open Session).  The message will be added to the queue for sending and delivered even if the phone  is disconnected from the Internet or authorization is not passed.  Only one of two parameters is needed to determine the destination - chatId or phone.  Direct Send is in beta. Meta has not enabled it on every business portfolio, so `category` and `directSend` are a beta option: watch delivery errors before relying on them.  Set `category` to `utility` or `authentication` to send outside the 24-hour window as a Meta Direct Send template instead of the 1MSG marketing auto-template. `authentication` is part of that beta and is not recommended. `directSend.serviceFirst: true` tries a free service message first and uses Direct Send only when Meta rejects it because the window is closed (131047). `directSend.templateName` is only valid with `utility` (`^[a-z0-9_]+$`, max 512). Direct Send text is limited to 1024 characters. Without `templateName`, the first unseen phrase may be delivered as Meta's onboarding template. A named template does not guarantee delivery — wait for webhook errors 131000 or 132021. An open 24-hour window is still billed as utility when `category` is set and `serviceFirst` is not true. 
 
 ### Example
 ```swift
@@ -978,11 +1055,13 @@ import OneMsgSdk
 let token = "token_example" // String | JWT token or API key for authorization
 let body = "body_example" // String | Message text, UTF-8 or UTF-16 string with emoji
 let quotedMsgId = "quotedMsgId_example" // String | Message ID to quote/reply to (Cloud API wamid) (optional)
-let chatId = "chatId_example" // String | Chat ID in format: phone@c.us (individual) or phone@g.us (group) (optional)
+let chatId = "chatId_example" // String | Recipient chat ID: phone@c.us, group@g.us, or BSUID@lid (optional)
 let phone = 987 // Int | Phone number starting with country code (alternative to chatId) (optional)
+let category = "category_example" // String | Optional Direct Send category. Direct Send is in beta: Meta has not enabled it on every business portfolio. `utility` or `authentication` enables it. `authentication` is part of that beta and is not recommended. Omit or `service` keeps a normal service message (and the marketing auto-template outside the 24-hour window). `marketing` is rejected.  (optional)
+let directSend = SendMessageRequest_directSend(serviceFirst: false, templateName: "templateName_example") // SendMessageRequestDirectSend |  (optional)
 
 // Send a Message
-MessagingAPI.sendMessage(token: token, body: body, quotedMsgId: quotedMsgId, chatId: chatId, phone: phone) { (response, error) in
+MessagingAPI.sendMessage(token: token, body: body, quotedMsgId: quotedMsgId, chatId: chatId, phone: phone, category: category, directSend: directSend) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -1001,8 +1080,10 @@ Name | Type | Description  | Notes
  **token** | **String** | JWT token or API key for authorization | 
  **body** | **String** | Message text, UTF-8 or UTF-16 string with emoji | 
  **quotedMsgId** | **String** | Message ID to quote/reply to (Cloud API wamid) | [optional] 
- **chatId** | **String** | Chat ID in format: phone@c.us (individual) or phone@g.us (group) | [optional] 
+ **chatId** | **String** | Recipient chat ID: phone@c.us, group@g.us, or BSUID@lid | [optional] 
  **phone** | **Int** | Phone number starting with country code (alternative to chatId) | [optional] 
+ **category** | **String** | Optional Direct Send category. Direct Send is in beta: Meta has not enabled it on every business portfolio. &#x60;utility&#x60; or &#x60;authentication&#x60; enables it. &#x60;authentication&#x60; is part of that beta and is not recommended. Omit or &#x60;service&#x60; keeps a normal service message (and the marketing auto-template outside the 24-hour window). &#x60;marketing&#x60; is rejected.  | [optional] 
+ **directSend** | [**SendMessageRequestDirectSend**](SendMessageRequestDirectSend.md) |  | [optional] 
 
 ### Return type
 
@@ -1125,10 +1206,12 @@ Name | Type | Description  | Notes
 
 # **sendProduct**
 ```swift
-    open class func sendProduct(token: String, requestBody: [String: AnyCodable]? = nil, completion: @escaping (_ data: MessageSentResponse?, _ error: Error?) -> Void)
+    open class func sendProduct(token: String, sendProductRequest: SendProductRequest, completion: @escaping (_ data: MessageSentResponse?, _ error: Error?) -> Void)
 ```
 
 Send a Product
+
+Send a single catalog product or a product list. Destination is `chatId` or `phone`. `action` is required: - single product: `{ \"catalog_id\": \"...\", \"product_retailer_id\": \"...\" }` - product list: `{ \"catalog_id\": \"...\", \"sections\": [{ \"title\": \"...\", \"product_items\": [{ \"product_retailer_id\": \"...\" }] }] }` 
 
 ### Example
 ```swift
@@ -1136,10 +1219,10 @@ Send a Product
 import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
-let requestBody = "TODO" // [String: AnyCodable] |  (optional)
+let sendProductRequest = sendProduct_request(phone: "phone_example", chatId: "chatId_example", quotedMsgId: "quotedMsgId_example", body: "body_example", footer: "footer_example", header: "header_example", action: "TODO") // SendProductRequest | 
 
 // Send a Product
-MessagingAPI.sendProduct(token: token, requestBody: requestBody) { (response, error) in
+MessagingAPI.sendProduct(token: token, sendProductRequest: sendProductRequest) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -1156,7 +1239,7 @@ MessagingAPI.sendProduct(token: token, requestBody: requestBody) { (response, er
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **token** | **String** | JWT token or API key for authorization | 
- **requestBody** | [**[String: AnyCodable]**](AnyCodable.md) |  | [optional] 
+ **sendProductRequest** | [**SendProductRequest**](SendProductRequest.md) |  | 
 
 ### Return type
 
@@ -1186,7 +1269,7 @@ Send Reaction
 import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
-let sendReactionRequest = sendReaction_request(phone: "phone_example", body: "body_example", quotedMsgId: "quotedMsgId_example") // SendReactionRequest |  (optional)
+let sendReactionRequest = sendReaction_request(phone: "phone_example", chatId: "chatId_example", body: "body_example", quotedMsgId: "quotedMsgId_example") // SendReactionRequest |  (optional)
 
 // Send Reaction
 MessagingAPI.sendReaction(token: token, sendReactionRequest: sendReactionRequest) { (response, error) in

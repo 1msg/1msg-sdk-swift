@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 Get Profile Info
 
-Get WhatsApp Business Account profile information
+Return the WhatsApp Business profile for this channel: About, address, description, email, phone, websites, industry (`vertical`), and profile photo URL. 
 
 ### Example
 ```swift
@@ -60,7 +60,7 @@ Name | Type | Description  | Notes
 
 # **updateMe**
 ```swift
-    open class func updateMe(token: String, updateMeRequest: UpdateMeRequest? = nil, completion: @escaping (_ data: [String: AnyCodable]?, _ error: Error?) -> Void)
+    open class func updateMe(token: String, updateMeRequest: UpdateMeRequest, completion: @escaping (_ data: UpdateMe200Response?, _ error: Error?) -> Void)
 ```
 
 Update profile info
@@ -73,7 +73,7 @@ Update WhatsApp Business Account profile fields. At least one of about, descript
 import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
-let updateMeRequest = updateMe_request(about: "about_example", address: "address_example", description: "description_example", email: "email_example", vertical: "vertical_example", photo: "photo_example", websites: ["websites_example"]) // UpdateMeRequest |  (optional)
+let updateMeRequest = updateMe_request(about: "about_example", address: "address_example", description: "description_example", email: "email_example", vertical: "vertical_example", photo: "photo_example", websites: ["websites_example"]) // UpdateMeRequest | 
 
 // Update profile info
 ProfileAPI.updateMe(token: token, updateMeRequest: updateMeRequest) { (response, error) in
@@ -93,11 +93,11 @@ ProfileAPI.updateMe(token: token, updateMeRequest: updateMeRequest) { (response,
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **token** | **String** | JWT token or API key for authorization | 
- **updateMeRequest** | [**UpdateMeRequest**](UpdateMeRequest.md) |  | [optional] 
+ **updateMeRequest** | [**UpdateMeRequest**](UpdateMeRequest.md) |  | 
 
 ### Return type
 
-**[String: AnyCodable]**
+[**UpdateMe200Response**](UpdateMe200Response.md)
 
 ### Authorization
 

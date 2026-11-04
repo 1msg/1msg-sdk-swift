@@ -25,7 +25,7 @@ public struct SendTemplateRequest: Codable, JSONEncodable, Hashable {
     public var chatId: String?
     /** Optional Cloud API wamid to quote */
     public var quotedMsgId: String?
-    /** Force Marketing Messages API (POST marketing_messages). If omitted: auto for MARKETING category when channel has mm_lite_enabled and mm_lite_available service settings.  */
+    /** Force Marketing Messages API (POST marketing_messages). If omitted, and the channel has mm_lite_enabled and mm_lite_available: MARKETING templates and templates with an unknown category use marketing_messages. An unknown category falls back to messages (mmLiteFallback) when Meta rejects it. Known AUTHENTICATION and UTILITY templates stay on messages. useMMlite:false forces messages.  */
     public var useMMlite: Bool?
     /** Sets message_activity_sharing on WABA payload. Enables click tracking webhooks. Requires MM Lite path. Ignored on Cloud API fallback.  */
     public var messageActivitySharing: Bool?

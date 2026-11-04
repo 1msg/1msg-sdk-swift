@@ -19,10 +19,12 @@ Method | HTTP request | Description
 
 # **createFlows**
 ```swift
-    open class func createFlows(token: String, wabaAccountId: String? = nil, completion: @escaping (_ data: CreateGroups200Response?, _ error: Error?) -> Void)
+    open class func createFlows(token: String, createFlowsRequest: CreateFlowsRequest, wabaAccountId: String? = nil, completion: @escaping (_ data: CreateGroups200Response?, _ error: Error?) -> Void)
 ```
 
 Create Flow
+
+Create a WhatsApp Flow (`name` + `categories` required). Currently returns HTTP 501 until the Meta Graph Flows rewrite is available. 
 
 ### Example
 ```swift
@@ -30,10 +32,11 @@ Create Flow
 import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
+let createFlowsRequest = createFlows_request(name: "name_example", categories: ["categories_example"], endpointUri: "endpointUri_example", publish: false, flowJson: "TODO") // CreateFlowsRequest | 
 let wabaAccountId = "wabaAccountId_example" // String |  (optional)
 
 // Create Flow
-FlowsAPI.createFlows(token: token, wabaAccountId: wabaAccountId) { (response, error) in
+FlowsAPI.createFlows(token: token, createFlowsRequest: createFlowsRequest, wabaAccountId: wabaAccountId) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -50,6 +53,7 @@ FlowsAPI.createFlows(token: token, wabaAccountId: wabaAccountId) { (response, er
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **token** | **String** | JWT token or API key for authorization | 
+ **createFlowsRequest** | [**CreateFlowsRequest**](CreateFlowsRequest.md) |  | 
  **wabaAccountId** | **String** |  | [optional] 
 
 ### Return type
@@ -62,7 +66,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
+ - **Content-Type**: application/json
  - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -379,10 +383,12 @@ Name | Type | Description  | Notes
 
 # **listFlows**
 ```swift
-    open class func listFlows(token: String, wabaAccountId: String? = nil, completion: @escaping (_ data: ListFlows200Response?, _ error: Error?) -> Void)
+    open class func listFlows(token: String, wabaAccountId: String? = nil, fields: String? = nil, completion: @escaping (_ data: ListFlows200Response?, _ error: Error?) -> Void)
 ```
 
 List Flows
+
+List WhatsApp Flows for the WABA. Currently returns HTTP 501 until the Meta Graph Flows rewrite is available. 
 
 ### Example
 ```swift
@@ -391,9 +397,10 @@ import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
 let wabaAccountId = "wabaAccountId_example" // String |  (optional)
+let fields = "fields_example" // String | Comma-separated Flow fields to return (optional)
 
 // List Flows
-FlowsAPI.listFlows(token: token, wabaAccountId: wabaAccountId) { (response, error) in
+FlowsAPI.listFlows(token: token, wabaAccountId: wabaAccountId, fields: fields) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -411,6 +418,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **token** | **String** | JWT token or API key for authorization | 
  **wabaAccountId** | **String** |  | [optional] 
+ **fields** | **String** | Comma-separated Flow fields to return | [optional] 
 
 ### Return type
 
@@ -429,10 +437,12 @@ Name | Type | Description  | Notes
 
 # **patchFlowsFlowIdAssets**
 ```swift
-    open class func patchFlowsFlowIdAssets(flowId: String, token: String, wabaAccountId: String? = nil, completion: @escaping (_ data: PatchFlowsFlowIdAssets200Response?, _ error: Error?) -> Void)
+    open class func patchFlowsFlowIdAssets(flowId: String, token: String, patchFlowsFlowIdAssetsRequest: PatchFlowsFlowIdAssetsRequest, wabaAccountId: String? = nil, completion: @escaping (_ data: PatchFlowsFlowIdAssets200Response?, _ error: Error?) -> Void)
 ```
 
 Update Flow Structure
+
+Replace the Flow JSON document (`flowJson`). Currently returns HTTP 501 until the Meta Graph Flows rewrite is available. 
 
 ### Example
 ```swift
@@ -441,10 +451,11 @@ import OneMsgSdk
 
 let flowId = "flowId_example" // String | Flow ID
 let token = "token_example" // String | JWT token or API key for authorization
+let patchFlowsFlowIdAssetsRequest = patchFlowsFlowIdAssets_request(flowJson: "TODO") // PatchFlowsFlowIdAssetsRequest | 
 let wabaAccountId = "wabaAccountId_example" // String |  (optional)
 
 // Update Flow Structure
-FlowsAPI.patchFlowsFlowIdAssets(flowId: flowId, token: token, wabaAccountId: wabaAccountId) { (response, error) in
+FlowsAPI.patchFlowsFlowIdAssets(flowId: flowId, token: token, patchFlowsFlowIdAssetsRequest: patchFlowsFlowIdAssetsRequest, wabaAccountId: wabaAccountId) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -462,6 +473,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **flowId** | **String** | Flow ID | 
  **token** | **String** | JWT token or API key for authorization | 
+ **patchFlowsFlowIdAssetsRequest** | [**PatchFlowsFlowIdAssetsRequest**](PatchFlowsFlowIdAssetsRequest.md) |  | 
  **wabaAccountId** | **String** |  | [optional] 
 
 ### Return type
@@ -474,17 +486,19 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
+ - **Content-Type**: application/json
  - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **patchFlowsFlowIdMetadata**
 ```swift
-    open class func patchFlowsFlowIdMetadata(flowId: String, token: String, wabaAccountId: String? = nil, completion: @escaping (_ data: [String: AnyCodable]?, _ error: Error?) -> Void)
+    open class func patchFlowsFlowIdMetadata(flowId: String, token: String, patchFlowsFlowIdMetadataRequest: PatchFlowsFlowIdMetadataRequest, wabaAccountId: String? = nil, completion: @escaping (_ data: [String: AnyCodable]?, _ error: Error?) -> Void)
 ```
 
 Update Flow Metadata
+
+Update Flow `name`, `categories`, and/or `endpointUri`. Currently returns HTTP 501 until the Meta Graph Flows rewrite is available. 
 
 ### Example
 ```swift
@@ -493,10 +507,11 @@ import OneMsgSdk
 
 let flowId = "flowId_example" // String | Flow ID
 let token = "token_example" // String | JWT token or API key for authorization
+let patchFlowsFlowIdMetadataRequest = patchFlowsFlowIdMetadata_request(name: "name_example", categories: ["categories_example"], endpointUri: "endpointUri_example") // PatchFlowsFlowIdMetadataRequest | 
 let wabaAccountId = "wabaAccountId_example" // String |  (optional)
 
 // Update Flow Metadata
-FlowsAPI.patchFlowsFlowIdMetadata(flowId: flowId, token: token, wabaAccountId: wabaAccountId) { (response, error) in
+FlowsAPI.patchFlowsFlowIdMetadata(flowId: flowId, token: token, patchFlowsFlowIdMetadataRequest: patchFlowsFlowIdMetadataRequest, wabaAccountId: wabaAccountId) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -514,6 +529,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **flowId** | **String** | Flow ID | 
  **token** | **String** | JWT token or API key for authorization | 
+ **patchFlowsFlowIdMetadataRequest** | [**PatchFlowsFlowIdMetadataRequest**](PatchFlowsFlowIdMetadataRequest.md) |  | 
  **wabaAccountId** | **String** |  | [optional] 
 
 ### Return type
@@ -526,7 +542,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
+ - **Content-Type**: application/json
  - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

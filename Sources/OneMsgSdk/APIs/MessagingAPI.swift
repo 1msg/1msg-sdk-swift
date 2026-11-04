@@ -551,6 +551,50 @@ open class MessagingAPI {
     }
 
     /**
+     Request the user's phone number
+     
+     - parameter token: (query) JWT token or API key for authorization 
+     - parameter sendContactInfoRequest: (body)  (optional)
+     - returns: MessageSentResponse
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func sendContactInfo(token: String, sendContactInfoRequest: SendContactInfoRequest? = nil) async throws -> MessageSentResponse {
+        return try await sendContactInfoWithRequestBuilder(token: token, sendContactInfoRequest: sendContactInfoRequest).execute().body
+    }
+
+    /**
+     Request the user's phone number
+     - POST /sendContactInfo
+     - Send a service-window interactive message that asks the WhatsApp user to share their phone number (`request_contact_info`).  Use this when you only know the user by BSUID (WhatsApp username) and the 24-hour customer service window is open. Outside that window, create a UTILITY or MARKETING template with a `REQUEST_CONTACT_INFO` button (`POST /addTemplate`) and send it with `POST /sendTemplate`.  `body` is the text shown above the button (1–1024 characters). WhatsApp chooses the button label. This method has no button-text field — do not send one.  ```json {   \"bsuid\": \"US.13491208655302741918\",   \"body\": \"Please share your phone number so we can reach you.\" } ```  `phone`, `chatId` (`…@c.us`, `…@lid`, `…@username`), or `bsuid` identifies the recipient. One of them is enough.  After Meta accepts the send, the outgoing webhook and stored history message use this same text as `messages[].body` (`type: interactive`).  When the user taps the button, Meta sends an inbound `contacts` message. The sender stays the BSUID. The shared number is on the card with `origin: contact_request`. We write that phone onto the existing BSUID contact automatically — there is no separate “link phone” call.  ```json {   \"contacts\": [     {       \"profile\": { \"name\": \"Ada\", \"username\": \"ada\" },       \"user_id\": \"US.13491208655302741918\"     }   ],   \"messages\": [     {       \"from_user_id\": \"US.13491208655302741918\",       \"type\": \"contacts\",       \"contacts\": [         {           \"origin\": \"contact_request\",           \"phones\": [{ \"phone\": \"+1 202-555-0123\", \"wa_id\": \"12025550123\" }]         }       ]     }   ] } ```  The stored inbound message body is the digits (`12025550123`).  If Meta later includes a phone on an ordinary message or status for that same BSUID (`wa_id`, `from`, or `recipient_id`, together with `user_id` / `recipient_user_id`), that phone is merged onto the same contact. A contact card the user forwards (`origin` other than `contact_request`) is someone else's number and is not stored as this sender's phone. 
+     - API Key:
+       - type: apiKey token (QUERY)
+       - name: tokenAuth
+     - parameter token: (query) JWT token or API key for authorization 
+     - parameter sendContactInfoRequest: (body)  (optional)
+     - returns: RequestBuilder<MessageSentResponse> 
+     */
+    open class func sendContactInfoWithRequestBuilder(token: String, sendContactInfoRequest: SendContactInfoRequest? = nil) -> RequestBuilder<MessageSentResponse> {
+        let localVariablePath = "/sendContactInfo"
+        let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: sendContactInfoRequest)
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "token": (wrappedValue: token.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "Content-Type": "application/json",
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<MessageSentResponse>.Type = OneMsgSdkAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
      Send CTA URL interactive message
      
      - parameter token: (query) JWT token or API key for authorization 
@@ -938,6 +982,15 @@ open class MessagingAPI {
     }
 
     /**
+     * enum for parameter category
+     */
+    public enum Category_sendMessage: String, CaseIterable {
+        case utility = "utility"
+        case authentication = "authentication"
+        case service = "service"
+    }
+
+    /**
      Send a Message
      
      - parameter token: (query) JWT token or API key for authorization 
@@ -945,17 +998,19 @@ open class MessagingAPI {
      - parameter quotedMsgId: (form) Message ID to quote/reply to (Cloud API wamid) (optional)
      - parameter chatId: (form) Recipient chat ID: phone@c.us, group@g.us, or BSUID@lid (optional)
      - parameter phone: (form) Phone number starting with country code (alternative to chatId) (optional)
+     - parameter category: (form) Optional Direct Send category. Direct Send is in beta: Meta has not enabled it on every business portfolio. &#x60;utility&#x60; or &#x60;authentication&#x60; enables it. &#x60;authentication&#x60; is part of that beta and is not recommended. Omit or &#x60;service&#x60; keeps a normal service message (and the marketing auto-template outside the 24-hour window). &#x60;marketing&#x60; is rejected.  (optional)
+     - parameter directSend: (form)  (optional)
      - returns: MessageSentResponse
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    open class func sendMessage(token: String, body: String, quotedMsgId: String? = nil, chatId: String? = nil, phone: Int? = nil) async throws -> MessageSentResponse {
-        return try await sendMessageWithRequestBuilder(token: token, body: body, quotedMsgId: quotedMsgId, chatId: chatId, phone: phone).execute().body
+    open class func sendMessage(token: String, body: String, quotedMsgId: String? = nil, chatId: String? = nil, phone: Int? = nil, category: Category_sendMessage? = nil, directSend: SendMessageRequestDirectSend? = nil) async throws -> MessageSentResponse {
+        return try await sendMessageWithRequestBuilder(token: token, body: body, quotedMsgId: quotedMsgId, chatId: chatId, phone: phone, category: category, directSend: directSend).execute().body
     }
 
     /**
      Send a Message
      - POST /sendMessage
-     - Send a message to an existing chat. (Only if the dialogue has an Open Session).  The message will be added to the queue for sending and delivered even if the phone  is disconnected from the Internet or authorization is not passed.  Only one of two parameters is needed to determine the destination - chatId or phone. 
+     - Send a message to an existing chat. (Only if the dialogue has an Open Session).  The message will be added to the queue for sending and delivered even if the phone  is disconnected from the Internet or authorization is not passed.  Only one of two parameters is needed to determine the destination - chatId or phone.  Direct Send is in beta. Meta has not enabled it on every business portfolio, so `category` and `directSend` are a beta option: watch delivery errors before relying on them.  Set `category` to `utility` or `authentication` to send outside the 24-hour window as a Meta Direct Send template instead of the 1MSG marketing auto-template. `authentication` is part of that beta and is not recommended. `directSend.serviceFirst: true` tries a free service message first and uses Direct Send only when Meta rejects it because the window is closed (131047). `directSend.templateName` is only valid with `utility` (`^[a-z0-9_]+$`, max 512). Direct Send text is limited to 1024 characters. Without `templateName`, the first unseen phrase may be delivered as Meta's onboarding template. A named template does not guarantee delivery — wait for webhook errors 131000 or 132021. An open 24-hour window is still billed as utility when `category` is set and `serviceFirst` is not true. 
      - API Key:
        - type: apiKey token (QUERY)
        - name: tokenAuth
@@ -964,9 +1019,11 @@ open class MessagingAPI {
      - parameter quotedMsgId: (form) Message ID to quote/reply to (Cloud API wamid) (optional)
      - parameter chatId: (form) Recipient chat ID: phone@c.us, group@g.us, or BSUID@lid (optional)
      - parameter phone: (form) Phone number starting with country code (alternative to chatId) (optional)
+     - parameter category: (form) Optional Direct Send category. Direct Send is in beta: Meta has not enabled it on every business portfolio. &#x60;utility&#x60; or &#x60;authentication&#x60; enables it. &#x60;authentication&#x60; is part of that beta and is not recommended. Omit or &#x60;service&#x60; keeps a normal service message (and the marketing auto-template outside the 24-hour window). &#x60;marketing&#x60; is rejected.  (optional)
+     - parameter directSend: (form)  (optional)
      - returns: RequestBuilder<MessageSentResponse> 
      */
-    open class func sendMessageWithRequestBuilder(token: String, body: String, quotedMsgId: String? = nil, chatId: String? = nil, phone: Int? = nil) -> RequestBuilder<MessageSentResponse> {
+    open class func sendMessageWithRequestBuilder(token: String, body: String, quotedMsgId: String? = nil, chatId: String? = nil, phone: Int? = nil, category: Category_sendMessage? = nil, directSend: SendMessageRequestDirectSend? = nil) -> RequestBuilder<MessageSentResponse> {
         let localVariablePath = "/sendMessage"
         let localVariableURLString = OneMsgSdkAPI.basePath + localVariablePath
         let localVariableFormParams: [String: Any?] = [
@@ -974,6 +1031,8 @@ open class MessagingAPI {
             "quotedMsgId": quotedMsgId?.encodeToJSON(),
             "chatId": chatId?.encodeToJSON(),
             "phone": phone?.encodeToJSON(),
+            "category": category?.encodeToJSON(),
+            "directSend": directSend?.encodeToJSON(),
         ]
 
         let localVariableNonNullParameters = APIHelper.rejectNil(localVariableFormParams)

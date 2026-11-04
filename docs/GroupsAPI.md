@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 # **createGroups**
 ```swift
-    open class func createGroups(token: String, completion: @escaping (_ data: CreateGroups200Response?, _ error: Error?) -> Void)
+    open class func createGroups(token: String, createGroupsRequest: CreateGroupsRequest, completion: @escaping (_ data: CreateGroups200Response?, _ error: Error?) -> Void)
 ```
 
 Create Group
@@ -26,9 +26,10 @@ Create Group
 import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
+let createGroupsRequest = createGroups_request(groupName: "groupName_example", description: "description_example") // CreateGroupsRequest | 
 
 // Create Group
-GroupsAPI.createGroups(token: token) { (response, error) in
+GroupsAPI.createGroups(token: token, createGroupsRequest: createGroupsRequest) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -45,6 +46,7 @@ GroupsAPI.createGroups(token: token) { (response, error) in
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **token** | **String** | JWT token or API key for authorization | 
+ **createGroupsRequest** | [**CreateGroupsRequest**](CreateGroupsRequest.md) |  | 
 
 ### Return type
 
@@ -56,17 +58,19 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
+ - **Content-Type**: application/json
  - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **createGroupsGroupId**
 ```swift
-    open class func createGroupsGroupId(groupId: String, token: String, completion: @escaping (_ data: [String: AnyCodable]?, _ error: Error?) -> Void)
+    open class func createGroupsGroupId(groupId: String, token: String, createGroupsGroupIdRequest: CreateGroupsGroupIdRequest, completion: @escaping (_ data: [String: AnyCodable]?, _ error: Error?) -> Void)
 ```
 
 Update Group Info
+
+Update group subject, description, and/or profile picture. Path `groupId` is the WABA group id (without `@g.us`). 
 
 ### Example
 ```swift
@@ -75,9 +79,10 @@ import OneMsgSdk
 
 let groupId = "groupId_example" // String | 
 let token = "token_example" // String | JWT token or API key for authorization
+let createGroupsGroupIdRequest = createGroupsGroupId_request(subject: "subject_example", description: "description_example", profilePictureFile: "profilePictureFile_example") // CreateGroupsGroupIdRequest | 
 
 // Update Group Info
-GroupsAPI.createGroupsGroupId(groupId: groupId, token: token) { (response, error) in
+GroupsAPI.createGroupsGroupId(groupId: groupId, token: token, createGroupsGroupIdRequest: createGroupsGroupIdRequest) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -95,6 +100,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **groupId** | **String** |  | 
  **token** | **String** | JWT token or API key for authorization | 
+ **createGroupsGroupIdRequest** | [**CreateGroupsGroupIdRequest**](CreateGroupsGroupIdRequest.md) |  | 
 
 ### Return type
 
@@ -106,7 +112,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
+ - **Content-Type**: application/json
  - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -213,7 +219,7 @@ Name | Type | Description  | Notes
 
 # **getGroupsGroupId**
 ```swift
-    open class func getGroupsGroupId(groupId: String, token: String, completion: @escaping (_ data: [String: AnyCodable]?, _ error: Error?) -> Void)
+    open class func getGroupsGroupId(groupId: String, token: String, fields: String? = nil, completion: @escaping (_ data: [String: AnyCodable]?, _ error: Error?) -> Void)
 ```
 
 Get Group Info
@@ -225,9 +231,10 @@ import OneMsgSdk
 
 let groupId = "groupId_example" // String | 
 let token = "token_example" // String | JWT token or API key for authorization
+let fields = "fields_example" // String | Comma-separated group fields to return (optional)
 
 // Get Group Info
-GroupsAPI.getGroupsGroupId(groupId: groupId, token: token) { (response, error) in
+GroupsAPI.getGroupsGroupId(groupId: groupId, token: token, fields: fields) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -245,6 +252,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **groupId** | **String** |  | 
  **token** | **String** | JWT token or API key for authorization | 
+ **fields** | **String** | Comma-separated group fields to return | [optional] 
 
 ### Return type
 
@@ -313,10 +321,12 @@ Name | Type | Description  | Notes
 
 # **listGroups**
 ```swift
-    open class func listGroups(token: String, completion: @escaping (_ data: [String: AnyCodable]?, _ error: Error?) -> Void)
+    open class func listGroups(token: String, limit: Int? = nil, before: String? = nil, after: String? = nil, completion: @escaping (_ data: [String: AnyCodable]?, _ error: Error?) -> Void)
 ```
 
 Get Groups List
+
+List WhatsApp groups for this channel. Paginate with `limit`, `before`, and `after`.
 
 ### Example
 ```swift
@@ -324,9 +334,12 @@ Get Groups List
 import OneMsgSdk
 
 let token = "token_example" // String | JWT token or API key for authorization
+let limit = 987 // Int | Max groups to return (optional)
+let before = "before_example" // String | Cursor for the previous page (optional)
+let after = "after_example" // String | Cursor for the next page (optional)
 
 // Get Groups List
-GroupsAPI.listGroups(token: token) { (response, error) in
+GroupsAPI.listGroups(token: token, limit: limit, before: before, after: after) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -343,6 +356,9 @@ GroupsAPI.listGroups(token: token) { (response, error) in
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **token** | **String** | JWT token or API key for authorization | 
+ **limit** | **Int** | Max groups to return | [optional] 
+ **before** | **String** | Cursor for the previous page | [optional] 
+ **after** | **String** | Cursor for the next page | [optional] 
 
 ### Return type
 
